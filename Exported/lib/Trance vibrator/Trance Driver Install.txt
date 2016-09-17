@@ -1,0 +1,30 @@
+
+This document explains what is necessary to get a Trance Vibrator running
+with OpenVibrations on Windows.
+
+1) Install libusb-win32 filter driver
+
+You will need a copy of libusb-win32 to use trance-vibrator.exe on Windows.
+You can find out more at http://libusb-win32.sourceforge.net/, but it boils
+down to downloading libusb-win32-filter-bin-0.1.12.1.exe from sourceforge:
+
+   http://downloads.sourceforge.net/libusb-win32/libusb-win32-filter-bin-0.1.12.1.exe?modtime=1174387137&big_mirror=0
+
+Now install it, accepting any defaults it may present.
+
+2) Connect the Trance and install its drivers
+
+Connect your Trance Vibrator to your computer.  When prompted for drivers,
+browse to the location of drmn_trance.ini. usually C:\Documents and Settings\user\ovics-0.8.8\ovd\trance.
+
+As part of the installation you'll be asked to provide two additional files -
+libusb0.sys and libusb0.dll.  They're a part of the libusb-win32-filter you
+installed in the previous step, so when asked for these files, browse
+to these locations since they're already on your computer:
+
+c:\windows\system32\drivers\libusb0.sys
+c:\windows\system32\libusb0.dll
+
+You should now be ready to use your Trance on your computer.
+
+
