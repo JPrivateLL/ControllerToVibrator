@@ -1,0 +1,13 @@
+; use vibration editor in the program do not change this manually.
+; ! = name, tags
+; @ = stage, place
+; # = vibration type, strength, minimum strength, interval, time, ON time(for interval), start delay, amount
+
+!zyn licking, [loving, kneeling, laying, licking, cunnilingus, lesbian, oral, pussy, mouth, sex, zyn, ff]
+@0, 0
+@0, 1
+@0, 2
+@1, 0
+@1, 1
+@1, 2
+
