@@ -1,0 +1,18 @@
+; use vibration editor in the program do not change this manually.
+; ! = name, tags
+; @ = stage, place
+; # = vibration type, strength, minimum strength, interval, time, ON time(for interval), start delay, amount
+
+!name2, [a, b]
+@0, 0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+@0, 1
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+!name1, [a, b]
+@0, 0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
