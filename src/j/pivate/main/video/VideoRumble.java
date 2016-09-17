@@ -1,6 +1,5 @@
 package j.pivate.main.video;
 
-import j.pivate.main.gui.GUIVideo;
 import j.pivate.main.vibrator.Vibrator;
 import j.pivate.main.video.recorder.recorder;
 

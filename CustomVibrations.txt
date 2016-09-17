@@ -3,16 +3,11 @@
 ; @ = stage, place
 ; # = vibration type, strength, minimum strength, interval, time, ON time(for interval), start delay, amount
 
-!name2, [a, b]
+!zyn licking, [loving, kneeling, laying, licking, cunnilingus, lesbian, oral, pussy, mouth, sex, zyn, ff]
 @0, 0
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 @0, 1
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-
-!name1, [a, b]
-@0, 0
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+@0, 2
+@1, 0
+@1, 1
+@1, 2
 

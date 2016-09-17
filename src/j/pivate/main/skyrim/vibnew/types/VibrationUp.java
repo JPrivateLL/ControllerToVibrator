@@ -7,12 +7,12 @@ public class VibrationUp extends Vibration {
 	
 	
 	
-	public VibrationUp(int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
-		super(vibType, 3,  strength, minStrength, interval, time, onTime, startDelay, amount);
+	public VibrationUp(String name, int stage, int pos, int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
+		super(name, stage, pos, vibType, 3,  strength, minStrength, interval, time, onTime, startDelay, amount);
 		
 	}
 	@Override
-	protected float getRumbleStrengthOverride() {
+	protected float getRumbleStrengthAbstract() {
 		float i = getTimer();
 		while (i > interval) {
 			i -= interval;
@@ -56,31 +56,31 @@ public class VibrationUp extends Vibration {
 	}
 
 	@Override
-	public boolean usableStrength() {
+	public boolean usableStrengthAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableMinStrength() {
+	public boolean usableMinStrengthAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableTime() {
+	public boolean usableTimeAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableInterval() {
+	public boolean usableIntervalAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableAmount() {
+	public boolean usableAmountAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableOnTime() {
+	public boolean usableOnTimeAbstract() {
 		return false;
 	}
 	@Override
-	public boolean usableStartDelay() {
+	public boolean usableStartDelayAbstract() {
 		return true;
 	}
 }

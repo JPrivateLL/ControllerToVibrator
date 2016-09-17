@@ -4,13 +4,13 @@ import j.pivate.main.skyrim.vibnew.Vibration;
 
 public class VibrationInterval extends Vibration {
 
-	public VibrationInterval(int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
-		super(vibType,1,  strength, minStrength, interval, time, onTime, startDelay, amount);
+	public VibrationInterval(String name, int stage, int pos, int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
+		super(name, stage, pos, vibType,1,  strength, minStrength, interval, time, onTime, startDelay, amount);
 		
 	}
 
 	@Override
-	protected float getRumbleStrengthOverride() {
+	protected float getRumbleStrengthAbstract() {
 		float i = getTimer();
 		while (i > interval) {
 			i -= interval;
@@ -22,13 +22,6 @@ public class VibrationInterval extends Vibration {
 		}
 	}
 
-	@Override
-	public void setTime(float time){
-		//TODO check if amount or time is -1
-		ad
-	}
-	
-	
 	@Override
 	public boolean requiresStrengthAbstract() {
 		return true;
@@ -59,34 +52,36 @@ public class VibrationInterval extends Vibration {
 	}
 
 	@Override
-	public boolean usableStrength() {
+	public boolean usableStrengthAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableMinStrength() {
+	public boolean usableMinStrengthAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableTime() {
+	public boolean usableTimeAbstract() {
+		if(amount==-1)return false;
 		if(interval==0||amount==0)return true;
 		return false;
 	}
 	@Override
-	public boolean usableInterval() {
+	public boolean usableIntervalAbstract() {
 		if(time==0||amount==0)return true;
 		return false;
 	}
 	@Override
-	public boolean usableAmount() {
+	public boolean usableAmountAbstract() {
+		if(time==-1)return false;
 		if(interval==0||time==0)return true;
 		return false;
 	}
 	@Override
-	public boolean usableOnTime() {
+	public boolean usableOnTimeAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableStartDelay() {
+	public boolean usableStartDelayAbstract() {
 		return true;
 	}
 	

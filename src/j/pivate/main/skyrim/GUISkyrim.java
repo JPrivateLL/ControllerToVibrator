@@ -1,8 +1,10 @@
 package j.pivate.main.skyrim;
 
 import j.pivate.main.gui.GUIStartMenu;
-import j.pivate.main.skyrim.vibration.VibrationSet;
-import j.pivate.main.skyrim.vibration.types.Vibration;
+import j.pivate.main.skyrim.vibnew.CustomVibrations;
+import j.pivate.main.skyrim.vibnew.GUISkyrimAnimator;
+import j.pivate.main.skyrim.vibnew.VibrationGroup;
+import j.pivate.main.skyrim.vibnew.VibrationSet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -43,12 +45,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.BevelBorder;
 
@@ -81,35 +77,6 @@ public class GUISkyrim extends JFrame {
 	private float strengthController1, strengthController2,strengthController3, strengthController4;
 
 	private boolean testVibrateOn = false;
-	
-	private Vibration runningVibration;
-
-	public void addSexlabAnimation(VibrationSet vibSet){
-		//add
-		sexlabVibrationListInput.addItem(vibSet);
-		
-		//remove if to many
-		if(sexlabVibrationListInput.getItemAt(8)!=null){
-			sexlabVibrationListInput.removeItemAt(0);
-		}
-		
-		//set the last that was added as selected
-		sexlabVibrationListInput.setSelectedIndex(sexlabVibrationListInput.getItemCount()-1);
-		
-		//update all fields for new vibration
-		sexlabVibrationNumberInput.setSelectedIndex(0);
-		updateSexlabAnimation(vibSet.get(sexlabVibrationNumberInput.getSelectedIndex()));
-		
-		//enable user inputs if they where set to disabled
-		sexlabVibrationNumberInput.setEnabled(true);
-		sexlabPreviewInput.setEnabled(true);
-		sexlabVibrationListInput.setEnabled(true);
-	}
-	
-	private void updateSexlabAnimation(Vibration sexlabVibrationIntern){
-		runningVibration = sexlabVibrationIntern;
-		updateFieldInput();
-	}
 
 	public void addErrorToDebugScreen(final String text) {
 		setColorDebugScreen(text, Color.RED);
@@ -221,57 +188,8 @@ public class GUISkyrim extends JFrame {
 
 	private final ButtonGroup buttonGroup_4 = new ButtonGroup();
 	private JPanel panel_1;
-	private JPanel panel_3;
-	private JLabel sexlabMinStrengthLabel;
-	private JTextField sexlabMinStrengthInput;
-	private JLabel sexlabTimeLabel;
-	private JTextField sexlabTimeInput;
-	private JPanel panel_8;
-	private JLabel sexlabOnTimeLabel;
-	private JTextField sexlabOnTimeInput;
-	private JPanel panel_9;
-	private JLabel sexlabIntervalLabel;
-	private JTextField sexlabIntervalInput;
-	private JPanel panel_10;
-	private JLabel sexlabStartDelayLabel;
-	private JTextField sexlabStartDelayInput;
-	private JPanel panel_11;
-	private JLabel sexlabAmountLabel;
-	private JTextField sexlabAmountInput;
-	private JComboBox<VibrationSet> sexlabVibrationListInput;
-	private JPanel panel_6;
-	private JPanel panel_13;
-	private JButton sexlabPreviewInput;
 	private JLabel lblEquiped;
-	private JComboBox<String> sexlabVibrationNumberInput;
 	private JPanel panel_2;
-	private JPanel panel_7;
-	private JPanel panel_12;
-	private JPanel panel_4;
-	private JPanel panel_5;
-	private JCheckBox sexlabRequiresPlugInput;
-	private JLabel sexlabRequiredPlugLabel;
-	private JLabel sexlabTypeLabel;
-	private JPanel panel_14;
-	private JPanel panel_15;
-	private JLabel sexlabVibTypeLabel;
-	private JLabel sexlabStrengthLabel;
-	private JTextField sexlabStrengthInput;
-	private JComboBox<String> sexlabTypeInput;
-	private JMenu sexlabVibTypeInput;
-	private JCheckBoxMenuItem sexlabVibTypeInputVaginal;
-	private JCheckBoxMenuItem sexlabVibTypeInputVaginalShock;
-	private JCheckBoxMenuItem sexlabVibTypeInputAnal;
-	private JCheckBoxMenuItem sexlabVibTypeInputAnalShock;
-	private JCheckBoxMenuItem sexlabVibTypeInputBreasts;
-	private JCheckBoxMenuItem sexlabVibTypeInputBreastsShock;
-	private JCheckBoxMenuItem sexlabVibTypeInputOral;
-	private JCheckBoxMenuItem sexlabVibTypeInputOralShock;
-	private JCheckBoxMenuItem sexlabVibTypeInputDamage;
-	private JCheckBoxMenuItem sexlabVibTypeInputDamageShock;
-	private JCheckBoxMenuItem sexlabVibTypeInputInteraction;
-	private JCheckBoxMenuItem sexlabVibTypeInputInteractionShock;
-	private JMenuBar menuBar_1;
 	private JLabel lblMadeByJprivate;
 	private JPanel panel_16;
 	private JPanel panel_17;
@@ -304,7 +222,6 @@ public class GUISkyrim extends JFrame {
 		final WindowListener exitListener = new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				if(runningVibration!=null)updateUserInput();
 				mainThread.terminate();
 				System.exit(0);
 			}
@@ -332,412 +249,46 @@ public class GUISkyrim extends JFrame {
 		getContentPane().add(panel_1, BorderLayout.WEST);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		panel_13 = new JPanel();
-		panel_1.add(panel_13, BorderLayout.NORTH);
-		
 		panel_2 = new JPanel();
 		panel_1.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new BorderLayout(0, 0));
-
 				
+		panel_18 = new JPanel();
+		panel_2.add(panel_18, BorderLayout.SOUTH);
+		panel_18.setLayout(new MigLayout("", "[]", "[][][][]"));
+		
+		RunningVibrationsLabel = new JLabel("Running Vibrations:--");
+		panel_18.add(RunningVibrationsLabel, "cell 0 0");
+		
+		lblEquiped = new JLabel("Equiped:--");
+		panel_18.add(lblEquiped, "cell 0 1");
 				
-				
-				panel_6 = new JPanel();
-				panel_2.add(panel_6, BorderLayout.CENTER);
-				panel_6.setLayout(new MigLayout("", "[150px][150px]", "[0px][0px][0px][0px][0px][0px][][][][]"));
-				
-				panel_18 = new JPanel();
-				panel_2.add(panel_18, BorderLayout.SOUTH);
-				panel_18.setLayout(new MigLayout("", "[]", "[][][][]"));
-				
-				RunningVibrationsLabel = new JLabel("Running Vibrations:--");
-				panel_18.add(RunningVibrationsLabel, "cell 0 0");
-				
-				lblEquiped = new JLabel("Equiped:--");
-				panel_18.add(lblEquiped, "cell 0 1");
-				
-						SLAIndicatorLabel = new JLabel("Arousel lvl:--");
-						panel_18.add(SLAIndicatorLabel, "cell 0 2");
+		SLAIndicatorLabel = new JLabel("Arousel lvl:--");
+		panel_18.add(SLAIndicatorLabel, "cell 0 2");
 						
-						lblTimer = new JLabel("Timer:--");
-						panel_18.add(lblTimer, "cell 0 3");
-				
-				panel_14 = new JPanel();
-				FlowLayout flowLayout_7 = (FlowLayout) panel_14.getLayout();
-				flowLayout_7.setAlignment(FlowLayout.RIGHT);
-				panel_6.add(panel_14, "cell 0 0,grow");
-				
-				sexlabTypeLabel = new JLabel("Type:");
-				panel_14.add(sexlabTypeLabel);
-				
-				sexlabTypeInput = new JComboBox<String>();
-				for (int i = 0; i < Vibration.TYPES.length; i++) {
-					sexlabTypeInput.addItem(Vibration.TYPES[i]);
-				}
-				sexlabTypeInput.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						updateUserInput();
+		lblTimer = new JLabel("Timer:--");
+		panel_18.add(lblTimer, "cell 0 3");
+		
+		btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VibrationSet ls = CustomVibrations.getLastSet();
+				if(ls==null)ls = CustomVibrations.getSet(0);
+				if(ls!=null){
+					VibrationGroup lg = ls.getLastGroup();
+					if(lg==null)lg = ls.getGroup(0,0);
+					if(lg!=null){
+						passClass.guiSkyrim.setVisible(false);
+						JFrame csa = new GUISkyrimAnimator(ls,lg);
+						csa.setVisible(true);
+						return;
 					}
-				});
-				
-				panel_14.add(sexlabTypeInput);
-				
-				sexlabTypeInput.setEnabled(false);
-				
-						
-						panel_15 = new JPanel();
-						panel_6.add(panel_15, "cell 1 0,grow");
-						
-						sexlabRequiredPlugLabel = new JLabel("Plug required");
-						panel_15.add(sexlabRequiredPlugLabel);
-						
-						sexlabRequiresPlugInput = new JCheckBox("");
-						sexlabRequiresPlugInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabRequiresPlugInput.setEnabled(false);
-						panel_15.add(sexlabRequiresPlugInput);
-						
-						panel_4 = new JPanel();
-						FlowLayout flowLayout_8 = (FlowLayout) panel_4.getLayout();
-						flowLayout_8.setAlignment(FlowLayout.RIGHT);
-						panel_6.add(panel_4, "cell 0 1,grow");
-						
-						sexlabVibTypeLabel = new JLabel("Toy type:");
-						panel_4.add(sexlabVibTypeLabel);
-						
-						menuBar_1 = new JMenuBar();
-						panel_4.add(menuBar_1);
-						
-						sexlabVibTypeInput = new JMenu("Select          ");
-						sexlabVibTypeInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.setEnabled(false);
-						menuBar_1.add(sexlabVibTypeInput);
-						
-						sexlabVibTypeInputVaginal = new JCheckBoxMenuItem("Vaginal");
-						sexlabVibTypeInputVaginal.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputVaginal);
-						
-						sexlabVibTypeInputVaginalShock = new JCheckBoxMenuItem("Vaginal (shock)");
-						sexlabVibTypeInputVaginalShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputVaginalShock);
-						
-						sexlabVibTypeInputAnal = new JCheckBoxMenuItem("Anal");
-						sexlabVibTypeInputAnal.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputAnal);
-						
-						sexlabVibTypeInputAnalShock = new JCheckBoxMenuItem("Anal (shock)");
-						sexlabVibTypeInputAnalShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputAnalShock);
-						
-						sexlabVibTypeInputBreasts = new JCheckBoxMenuItem("Breasts");
-						sexlabVibTypeInputBreasts.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputBreasts);
-						
-						sexlabVibTypeInputBreastsShock = new JCheckBoxMenuItem("Breasts (shock)");
-						sexlabVibTypeInputBreastsShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputBreastsShock);
-						
-						sexlabVibTypeInputOral = new JCheckBoxMenuItem("Oral");
-						sexlabVibTypeInputOral.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputOral);
-						
-						sexlabVibTypeInputOralShock = new JCheckBoxMenuItem("Oral (shock)");
-						sexlabVibTypeInputOralShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputOralShock);
-						
-						sexlabVibTypeInputDamage = new JCheckBoxMenuItem("Damage");
-						sexlabVibTypeInputDamage.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputDamage);
-						
-						sexlabVibTypeInputDamageShock = new JCheckBoxMenuItem("Damage (shock)");
-						sexlabVibTypeInputDamageShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputDamageShock);
-						
-						sexlabVibTypeInputInteraction = new JCheckBoxMenuItem("Interaction");
-						sexlabVibTypeInputInteraction.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputInteraction);
-						
-						sexlabVibTypeInputInteractionShock = new JCheckBoxMenuItem("Interaction (shock)");
-						sexlabVibTypeInputInteractionShock.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								updateUserInput();
-							}
-						});
-						sexlabVibTypeInput.add(sexlabVibTypeInputInteractionShock);
-						
-						panel_5 = new JPanel();
-						FlowLayout flowLayout_6 = (FlowLayout) panel_5.getLayout();
-						flowLayout_6.setAlignment(FlowLayout.RIGHT);
-						panel_6.add(panel_5, "cell 1 1,grow");
-						
-						sexlabStrengthLabel = new JLabel("Strength:");
-						panel_5.add(sexlabStrengthLabel);
-						
-						sexlabStrengthInput = new JTextField();
-						sexlabStrengthInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabStrengthInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						sexlabStrengthInput.setEnabled(false);
-						panel_5.add(sexlabStrengthInput);
-						sexlabStrengthInput.setColumns(8);
-						
-						panel_12 = new JPanel();
-						FlowLayout flowLayout_4 = (FlowLayout) panel_12.getLayout();
-						flowLayout_4.setAlignment(FlowLayout.RIGHT);
-						panel_6.add(panel_12, "cell 0 2,grow");
-						
-						sexlabTimeLabel = new JLabel("Time:");
-						panel_12.add(sexlabTimeLabel);
-						
-						sexlabTimeInput = new JTextField();
-						panel_12.add(sexlabTimeInput);
-						sexlabTimeInput.setEnabled(false);
-						sexlabTimeInput.setColumns(8);
-						
-						sexlabTimeInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabTimeInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						
-						panel_3 = new JPanel();
-						panel_6.add(panel_3, "cell 1 2,grow");
-						FlowLayout flowLayout_5 = (FlowLayout) panel_3.getLayout();
-						flowLayout_5.setAlignment(FlowLayout.RIGHT);
-						
-						sexlabMinStrengthLabel = new JLabel("Min strength:");
-						panel_3.add(sexlabMinStrengthLabel);
-						
-						sexlabMinStrengthInput = new JTextField();
-						sexlabMinStrengthInput.setEnabled(false);
-						sexlabMinStrengthInput.setColumns(8);
-						panel_3.add(sexlabMinStrengthInput);
-						
-						sexlabMinStrengthInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabMinStrengthInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						
-						panel_9 = new JPanel();
-						panel_6.add(panel_9, "cell 0 3,grow");
-						FlowLayout flowLayout_2 = (FlowLayout) panel_9.getLayout();
-						flowLayout_2.setAlignment(FlowLayout.RIGHT);
-						
-						sexlabIntervalLabel = new JLabel("Interval:");
-						panel_9.add(sexlabIntervalLabel);
-						
-						sexlabIntervalInput = new JTextField();
-						sexlabIntervalInput.setEnabled(false);
-						sexlabIntervalInput.setColumns(8);
-						panel_9.add(sexlabIntervalInput);
-						
-						sexlabIntervalInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabIntervalInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						
-						panel_10 = new JPanel();
-						panel_6.add(panel_10, "cell 1 3,grow");
-						FlowLayout flowLayout_1 = (FlowLayout) panel_10.getLayout();
-						flowLayout_1.setAlignment(FlowLayout.RIGHT);
-						
-						sexlabStartDelayLabel = new JLabel("Start delay:");
-						panel_10.add(sexlabStartDelayLabel);
-						
-						sexlabStartDelayInput = new JTextField();
-						sexlabStartDelayInput.setEnabled(false);
-						sexlabStartDelayInput.setColumns(8);
-						panel_10.add(sexlabStartDelayInput);
-						
-						sexlabStartDelayInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabStartDelayInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						
-						panel_11 = new JPanel();
-						panel_6.add(panel_11, "cell 0 4,grow");
-						FlowLayout flowLayout = (FlowLayout) panel_11.getLayout();
-						flowLayout.setAlignment(FlowLayout.RIGHT);
-						
-						sexlabAmountLabel = new JLabel("Amount:");
-						panel_11.add(sexlabAmountLabel);
-						
-						sexlabAmountInput = new JTextField();
-						sexlabAmountInput.setEnabled(false);
-						sexlabAmountInput.setColumns(8);
-						panel_11.add(sexlabAmountInput);
-						
-						sexlabAmountInput.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-								updateUserInput();
-								
-							}
-						});
-						sexlabAmountInput.addFocusListener(new FocusAdapter() {
-							@Override
-							public void focusLost(FocusEvent arg) {
-								updateUserInput();
-							}
-						});
-						
-						panel_8 = new JPanel();
-						panel_6.add(panel_8, "cell 1 4,grow");
-						FlowLayout flowLayout_3 = (FlowLayout) panel_8.getLayout();
-						flowLayout_3.setAlignment(FlowLayout.RIGHT);
-						
-						sexlabOnTimeLabel = new JLabel("On time:");
-						panel_8.add(sexlabOnTimeLabel);
-						
-						sexlabOnTimeInput = new JTextField();
-						sexlabOnTimeInput.setEnabled(false);
-						sexlabOnTimeInput.setColumns(8);
-						panel_8.add(sexlabOnTimeInput);
-		
-		sexlabOnTimeInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg) {
-				updateUserInput();
-				
-			}
-		});
-		sexlabOnTimeInput.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg) {
-				updateUserInput();
-			}
-		});
-		
-		panel_7 = new JPanel();
-		panel_1.add(panel_7, BorderLayout.NORTH);
-		
-		sexlabVibrationListInput = new JComboBox<VibrationSet>();
-		panel_7.add(sexlabVibrationListInput);
-		sexlabVibrationListInput.setEnabled(false);
-		
-		sexlabVibrationNumberInput = new JComboBox<String>();
-		panel_7.add(sexlabVibrationNumberInput);
-		sexlabVibrationNumberInput.setEnabled(false);
-		sexlabVibrationNumberInput.setModel(new DefaultComboBoxModel<String>(new String[] {"1", "2", "3", "4"}));
-		
-		sexlabPreviewInput = new JButton("Preview");
-		panel_7.add(sexlabPreviewInput);
-		sexlabPreviewInput.setEnabled(false);
-		sexlabPreviewInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(runningVibration.isValide()){
-					
-					new Thread()
-					{
-					    public void run() {
-					    	//TODO add preview button
-					    }
-					}.start();
-				}else{//missing required input
-					JOptionPane.showMessageDialog(null,	"Missing required input(marked red)","warning", JOptionPane.WARNING_MESSAGE);
 				}
+				JOptionPane.showMessageDialog(null, "No vibrations to edit, try running some animations first.");
 			}
 		});
-		sexlabVibrationNumberInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				updateSexlabAnimation(((VibrationSet)sexlabVibrationListInput.getSelectedItem()).get(sexlabVibrationNumberInput.getSelectedIndex()));
-			}
-		});
-		sexlabVibrationListInput.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				sexlabVibrationNumberInput.setSelectedIndex(0);
-				
-			}
-		});
+		panel_2.add(btnEdit, BorderLayout.CENTER);
+
 
 		pane.add(new JScrollPane(debugScreen), BorderLayout.CENTER);
 
@@ -1243,108 +794,8 @@ public class GUISkyrim extends JFrame {
 		nonUser=false;
 	}
 	boolean nonUser = false;
-	private void updateUserInput(){
-		if(nonUser){
-			return;
-		}
-			
-		System.out.println("updateUserInput");
-		//get all user inputs
-		String type	= Vibration.TYPES[sexlabTypeInput.getSelectedIndex()];
-		boolean[] vibType = new boolean[12];
-			vibType[0]=sexlabVibTypeInputVaginal.isSelected();		vibType[1]=sexlabVibTypeInputVaginalShock.isSelected();
-			vibType[2]=sexlabVibTypeInputAnal.isSelected();			vibType[3]=sexlabVibTypeInputAnalShock.isSelected();
-			vibType[4]=sexlabVibTypeInputBreasts.isSelected();		vibType[5]=sexlabVibTypeInputBreastsShock.isSelected();
-			vibType[6]=sexlabVibTypeInputOral.isSelected();			vibType[7]=sexlabVibTypeInputOralShock.isSelected();
-			vibType[8]=sexlabVibTypeInputDamage.isSelected();		vibType[9]=sexlabVibTypeInputDamageShock.isSelected();
-			vibType[10]=sexlabVibTypeInputInteraction.isSelected();	vibType[11]=sexlabVibTypeInputInteractionShock.isSelected();
-		float strength = 0;		try{strength = Float.valueOf(sexlabStrengthInput.getText());}catch(NumberFormatException e){}
-		float minStrength = 0;	try{minStrength = Float.valueOf(sexlabMinStrengthInput.getText());}catch(NumberFormatException e){}
-		float time = 0;			try{time = Float.valueOf(sexlabTimeInput.getText());}catch(NumberFormatException e){}
-		float onTime = 0;		try{onTime = Float.valueOf(sexlabOnTimeInput.getText());}catch(NumberFormatException e){}
-		float interval = 0;		try{interval = Float.valueOf(sexlabIntervalInput.getText());}catch(NumberFormatException e){}
-		float startDelay = 0;	try{startDelay = Float.valueOf(sexlabStartDelayInput.getText());}catch(NumberFormatException e){}
-		float amount = 0;		try{amount = Float.valueOf(sexlabAmountInput.getText());}catch(NumberFormatException e){}
-		boolean plugRequired =	sexlabRequiresPlugInput.isSelected();
+	private JButton btnEdit;
 		
-		//set all user inputs
-		runningVibration.setType(type);
-		runningVibration.setVibType(vibType);
-		runningVibration.setStrength(strength/100f);
-		runningVibration.setMinStrength(minStrength/100f);
-		runningVibration.setTime(time);
-		runningVibration.setOnTime(onTime);
-		runningVibration.setInterval(interval);
-		runningVibration.setStartDelay(startDelay);
-		runningVibration.setAmount(amount);
-		runningVibration.setPlugRequired(plugRequired);
-	
-		//updated fields with updated vibration
-		updateFieldInput();
-	}
-	
-	private void updateFieldInput(){
-		nonUser=true;
-		System.out.println("updateFieldInput");
-	//set all colors
-		sexlabTypeLabel.setForeground				(getRequiresColor(runningVibration.requiresType()));
-		sexlabVibTypeLabel.setForeground			(getRequiresColor(runningVibration.requiresVibType()));
-		sexlabRequiredPlugLabel.setForeground		(getRequiresColor(runningVibration.requiresPlugRequired()));
-		sexlabStrengthLabel.setForeground			(getRequiresColor(runningVibration.requiresStrength()));
-		sexlabMinStrengthLabel.setForeground		(getRequiresColor(runningVibration.requiresMinStrength()));
-		sexlabTimeLabel.setForeground				(getRequiresColor(runningVibration.requiresTime()));
-		sexlabOnTimeLabel.setForeground				(getRequiresColor(runningVibration.requiresOnTime()));
-		sexlabIntervalLabel.setForeground			(getRequiresColor(runningVibration.requiresInterval()));
-		sexlabAmountLabel.setForeground				(getRequiresColor(runningVibration.requiresAmount()));
-		sexlabStartDelayLabel.setForeground			(getRequiresColor(runningVibration.requiresStartDelay()));
-		
-		
-	//set all inputs
-		sexlabTypeInput.setEnabled					(runningVibration.usableType());
-		sexlabVibTypeInput.setEnabled				(runningVibration.usableVibType());
-		sexlabRequiresPlugInput.setEnabled			(runningVibration.usablePlugRequired());
-		sexlabStrengthInput.setEnabled				(runningVibration.usableStrength());
-		sexlabMinStrengthInput.setEnabled			(runningVibration.usableMinStrength());
-		sexlabTimeInput.setEnabled					(runningVibration.usableTime());
-		sexlabOnTimeInput.setEnabled				(runningVibration.usableOnTime());
-		sexlabIntervalInput.setEnabled				(runningVibration.usableInterval());
-		sexlabStartDelayInput.setEnabled			(runningVibration.usableStartDelay());
-		sexlabAmountInput.setEnabled				(runningVibration.usableAmount());
-		
-		//update text
-		sexlabTypeInput.setSelectedItem				(runningVibration.getType());
-		
-		sexlabVibTypeInputVaginal.setSelected		(runningVibration.getVibType()[0]);
-		sexlabVibTypeInputVaginalShock.setSelected	(runningVibration.getVibType()[1]);
-		sexlabVibTypeInputAnal.setSelected			(runningVibration.getVibType()[2]);
-		sexlabVibTypeInputAnalShock.setSelected		(runningVibration.getVibType()[3]);
-		sexlabVibTypeInputBreasts.setSelected		(runningVibration.getVibType()[4]);
-		sexlabVibTypeInputBreastsShock.setSelected	(runningVibration.getVibType()[5]);
-		sexlabVibTypeInputOral.setSelected			(runningVibration.getVibType()[6]);
-		sexlabVibTypeInputOralShock.setSelected		(runningVibration.getVibType()[7]);
-		sexlabVibTypeInputDamage.setSelected		(runningVibration.getVibType()[8]);
-		sexlabVibTypeInputDamageShock.setSelected	(runningVibration.getVibType()[9]);
-		sexlabVibTypeInputInteraction.setSelected		(runningVibration.getVibType()[10]);
-		sexlabVibTypeInputInteractionShock.setSelected	(runningVibration.getVibType()[11]);
-		
-		sexlabRequiresPlugInput.setSelected			(runningVibration.getPlugRequired());
-		
-		sexlabStrengthInput.setText					(runningVibration.getStrength()==0?"":runningVibration.getStrength()*100f+"");
-		sexlabMinStrengthInput.setText				(runningVibration.getMinStrength()==0?"":runningVibration.getMinStrength()*100f+"");
-		sexlabTimeInput.setText						(runningVibration.getTime()==0?"":runningVibration.getTime()+"");
-		sexlabOnTimeInput.setText					(runningVibration.getOnTime()==0?"":runningVibration.getOnTime()+"");
-		sexlabIntervalInput.setText					(runningVibration.getInterval()==0?"":runningVibration.getInterval()+"");
-		sexlabStartDelayInput.setText				(runningVibration.getStartDelay()==0?"":runningVibration.getStartDelay()+"");
-		sexlabAmountInput.setText					(runningVibration.getAmount()==0?"":runningVibration.getAmount()+"");
-		
-		nonUser=false;
-	}
-	
-	
-	private Color getRequiresColor(boolean b){
-		return b ? Color.RED : null;
-	}
-	
 	public void setTimer(float time) {
 		lblTimer.setText("Timer:"+time);
 	}

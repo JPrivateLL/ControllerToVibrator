@@ -1,8 +1,5 @@
-package j.pivate.main.gui;
+package j.pivate.main.sound;
 
-
-import j.pivate.main.Arduino;
-import j.pivate.main.sound.Plotter;
 import j.pivate.main.vibrator.Vibrator;
 
 import java.awt.BorderLayout;
@@ -164,11 +161,26 @@ public class GUIMicrofone extends JFrame{
 							System.exit(1);
 						}
 
+						float last=0;
 						while (running) {
 
-							final byte[] bytes = new byte[2];
+							final byte[] bytes = new byte[16];
 							line.read(bytes, 0, bytes.length);
-							int i = calculateRMSLevel(bytes);// 0-100
+							
+							int loudest = 0;
+							for (int i = 0; i < bytes.length; i++) {
+								if(bytes[i]>loudest)loudest=bytes[i];
+							}
+							if(last>loudest){
+								last-=0.2f;
+								loudest=(int)last;
+							}else{
+								last=loudest;
+							}
+							//int i = calculateRMSLevel(bytes);// 0-100
+							
+							float i = loudest;
+							
 							i *= s1.getValue();
 							i /= 100;
 
@@ -179,17 +191,17 @@ public class GUIMicrofone extends JFrame{
 							if (i < 0) {
 								i = 0;
 							}
-							plotter1.setNewAmp(i);
-							plotter1.repaint();
-
-							plotter2.setNewAmp(Arduino.getFSRStrength()/10);
-							plotter2.repaint();
+							
 							
 							if (i > 100) {
 								i = 100;
 							}
+							
+							plotter1.setNewAmp((int)i);
+							plotter1.repaint();
+							
 							for (Vibrator v: vibrators) {
-								v.rumble(i);
+								v.rumble(i/100f);
 							}
 							;
 						}

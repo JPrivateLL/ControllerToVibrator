@@ -1,9 +1,12 @@
 package j.pivate.main.skyrim;
 
 import j.pivate.main.gui.GUIStartMenu;
-import j.pivate.main.skyrim.vibration.VibrationList;
-import j.pivate.main.skyrim.vibration.VibrationSet;
-import j.pivate.main.skyrim.vibration.types.Vibration;
+import j.pivate.main.skyrim.vibnew.CustomVibrations;
+import j.pivate.main.skyrim.vibnew.VibratorList;
+import j.pivate.main.skyrim.vibnew.Vibration;
+import j.pivate.main.skyrim.vibnew.VibrationGroup;
+import j.pivate.main.skyrim.vibnew.VibrationList;
+import j.pivate.main.skyrim.vibnew.VibrationSet;
 import j.pivate.main.vibrator.Vibrator;
 
 import java.io.BufferedReader;
@@ -20,30 +23,25 @@ import com.sun.jna.PointerType;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.win32.StdCallLibrary;
 
-public class SexlabMainThread{
+public class SexlabMainThread extends passClass{
 
 	
-	private GUISkyrim gui;
-	private SexlabVibratorList vibratorList;
-	private VibrationList vibrationList;
-	private SexlabMainThread mainThread;
 	private String line;
 	
 	public SexlabMainThread(final List<Vibrator> vibators, final String logLocation) {
-		this.mainThread = this;
-		this.vibratorList = new SexlabVibratorList(vibators);
-		this.vibrationList = new VibrationList();
+		mainThread = this;
+		vibratorList = new VibratorList(vibators);
+		vibrationList = new VibrationList();
 		this.papyrusLocation = logLocation;
 		
 		new Thread()
 		{
 		    public void run() {
-		    	gui = new GUISkyrim(mainThread);
+		    	guiSkyrim = new GUISkyrim(mainThread);
 		    }
 		}.start();
 		
-		while(gui==null){try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}}
-			
+		while(guiSkyrim==null){try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}}
 
 		controllerConnectedMessage = new boolean[vibators.size()];
 		
@@ -54,16 +52,13 @@ public class SexlabMainThread{
 		}
 		
 		//load sexlab animations
-		try{Vibration.load();}catch(IndexOutOfBoundsException | IOException e){
-			closeWithError("Can't load vibration.txt file, Error message:\n\""+e.getMessage()+"\"");
-		}
-		
+		CustomVibrations.load();
 		
 		papyrusReader = new BufferedReader(new InputStreamReader(papyrusFile));
 		line = readNextLine();
 		startupTime = line;
 
-		gui.addTextToDebugScreen("Skipping old code");
+		guiSkyrim.addTextToDebugScreen("Skipping old code");
 		while (readNextLine() != null);
 
 		new Thread() {
@@ -87,12 +82,12 @@ public class SexlabMainThread{
 					papyrusReader = newReader;
 					vibratorList.stopAll();
 					removeAllVibrations();
-					gui.restartLineCounter();
-					gui.cleanDebugScreen();
+					guiSkyrim.restartLineCounter();
+					guiSkyrim.cleanDebugScreen();
 
-					gui.addOneToLineCounter();
-					gui.addWaringToDebugScreen("New log found:");
-					gui.addTextToDebugScreen(line);
+					guiSkyrim.addOneToLineCounter();
+					guiSkyrim.addWaringToDebugScreen("New log found:");
+					guiSkyrim.addTextToDebugScreen(line);
 					return true;
 				}
 				return false;
@@ -103,7 +98,7 @@ public class SexlabMainThread{
 				boolean restartForTesting = true;
 				while (running) {
 					boolean b = true;
-					if (gui.testVibrate()) {
+					if (guiSkyrim.testVibrate()) {
 						if (restartForTesting) {
 							String line = "";
 							restartForTesting = false;
@@ -121,12 +116,12 @@ public class SexlabMainThread{
 							}// read line
 							startupTime = line;
 
-							gui.restartLineCounter();
-							gui.cleanDebugScreen();
+							guiSkyrim.restartLineCounter();
+							guiSkyrim.cleanDebugScreen();
 
-							gui.addOneToLineCounter();
-							gui.addWaringToDebugScreen("Restarted log reader for testing:");
-							gui.addTextToDebugScreen(line);
+							guiSkyrim.addOneToLineCounter();
+							guiSkyrim.addWaringToDebugScreen("Restarted log reader for testing:");
+							guiSkyrim.addTextToDebugScreen(line);
 						}
 					} else {
 						if (!restartForTesting) {
@@ -181,7 +176,7 @@ public class SexlabMainThread{
 								strength[i] = 0;
 							}else{
 								
-								strength[i] *= gui.getStrengthController(i); 
+								strength[i] *= guiSkyrim.getStrengthController(i); 
 								if (sla != -1f) {
 									strength[i] *= (sla+100f)/200f;
 								}
@@ -195,40 +190,15 @@ public class SexlabMainThread{
 	
 						//check how many vibrations are running
 						int runnningVibrations = vibrationList.size();
-						gui.setRunningVibrations(runnningVibrations);
+						guiSkyrim.setRunningVibrations(runnningVibrations);
 							
 						startTime = updateTime;
 					}
-	
-					
 					
 					line = readNextLine();
 					if (line != null) {
 						line = line.toLowerCase();
-						if (line.contains("jnsla=")) {
-							sla = Integer.valueOf(findInLine("jnsla", line));
-							gui.setSLAIndicator(sla);
-							line = line.substring(0, (line.indexOf("jnsla=")));
-						}
-						
-						if (line.contains("jnsexlab ")){lineCheckSexlab(line);}
-						else if (line.contains("jnequip ")){lineCheckEquiped(line);}
-						else if (line.contains("jnpause")){lineCheckPause(line);}
-						else if (line.contains("jnunpause")){lineCheckUnPause(line);}
-						else if (line.contains("jnmute")){lineCheckMute(line);}
-						else if (line.contains("jnunmute")){lineCheckUnMute(line);}
-						else if (line.contains("jntimer")){lineCheckTimer(line);}
-						else if (line.contains("jnCheckDebug ")){lineCheckDebug(line);}
-						else if (line.contains("jnstopall")){lineCheckStopAll(line);}
-						
-						else if (line.contains("loading game...")) {
-							removeAllVibrations();
-							gui.cleanDebugScreen();
-							gui
-									.addTextToDebugScreen("save game loaded(remove running vibrations)");
-						} else if (line.contains("log closed")) {
-							removeAllVibrations();
-						}
+						lineCheck(line);
 					} else {
 						try {
 							Thread.sleep(1);
@@ -253,32 +223,29 @@ public class SexlabMainThread{
 				e.printStackTrace();
 			}
 	
-			gui.addErrorToDebugScreen("Program stopped!");
+			guiSkyrim.addErrorToDebugScreen("Program stopped!");
 			System.out.println("main stopped");
 			vibratorList.releaseAll();;
 			}
 		}.start();
 	}
 
-
 	
-	
-	
-	public SexlabVibratorList getVibratorList(){
+	public VibratorList getVibratorList(){
 		return vibratorList;
 	}
 	
-	
-	
-	
+
 	private void closeWithError(String error){
-		Vibration.save();
-		this.vibratorList.releaseAll();
+		CustomVibrations.save();
+		vibratorList.releaseAll();
 		JOptionPane.showMessageDialog(null,error,"Error", JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}
 	
-	
+	public void testVibration(Vibration v){
+		vibrationList.add(v);
+	}
 	
 	
 	
@@ -296,14 +263,14 @@ public class SexlabMainThread{
 	private int sla = -1;
 
 	public void removeAllVibrations() {
-		this.vibrationList.removeAll();
-		this.vibratorList.stopAll();
-		gui.addWaringToDebugScreen("Removed all running vibrations");
+		vibrationList.removeAll();
+		vibratorList.stopAll();
+		guiSkyrim.addWaringToDebugScreen("Removed all running vibrations");
 	}
 
 	public void terminate() {
-		gui.addWaringToDebugScreen("stopping Program (breaking out of loop)");
-		Vibration.save();
+		guiSkyrim.addWaringToDebugScreen("stopping Program (breaking out of loop)");
+		CustomVibrations.save();
 		running = false;
 		
 	}
@@ -327,86 +294,99 @@ public class SexlabMainThread{
 			
 		return txt;
 	}
-	private void lineCheckSexlab(String line){
-		//get name
-		String name = findInLine("name", line);
-		if(name==null)return;
-		
-		//get stage
-		Integer stage = null;
-		try{stage = Integer.parseInt(findInLine("stage", line));}catch(NumberFormatException e){stage = 0;}
-		
-		//get pos
-		Integer pos = null;
-		try{pos = Integer.parseInt(findInLine("pos", line));}catch(NumberFormatException e){pos = 0;}
-		
-		if(line.contains("jnsexlab end")){
-			vibrationList.remove(name);
+	
+	
+	private boolean mute = false;
+	private boolean pause = false;
+	private static boolean[] equipedItems= new boolean[4];
+	private String[] equipedItemsName = new String[4];
+	
+	long timer = System.currentTimeMillis();
+	private void lineCheck(String line){
+		if (line.contains("jnsla=")) {
+			sla = Integer.valueOf(findInLine("jnsla", line));
+			guiSkyrim.setSLAIndicator(sla);
+			line = line.substring(0, (line.indexOf("jnsla=")));
+		}
+		if(line.contains("jnstart")){
+			//get name
+			String name = findInLine("name", line);
+			if(name==null)return;
+
+			//get tags
+			String tag = findInLine("tags", line.replace(" ", ""));
+			String[] tags = null;
+			if(tag!=null){
+				tag = tag.replace("\"", "");
+				tag = tag.substring(1, tag.length()-1);
+				tags = tag.split(",");
+			}
 			
-		}
-		
-		if(line.contains("jnsexlab endall")){
+			//get stage
+			Integer stage = null;
+			try{stage = Integer.parseInt(findInLine("stage", line));}catch(NumberFormatException e){stage = 0;}
+			
+			//get pos
+			Integer pos = null;
+			try{pos = Integer.parseInt(findInLine("pos", line));}catch(NumberFormatException e){pos = 0;}
+			
+			//get set
+			VibrationSet vs = CustomVibrations.getSet(name, tags);
+
+			//get group
+			VibrationGroup vg = vs.getGroup(stage, pos);
+			
+			if(passClass.guiAnimation!=null){
+				passClass.guiAnimation.updateVibration();
+			}
+			//add vibrations to running ones
+			for (int i = 0; i < vg.size(); i++) {
+				Vibration v = vg.get(i);
+				vibrationList.add(v.clone(vs.getName(),vg.getStage(),vg.getPos()));			
+			}
+		}else if(line.contains("jnstop")){
+			String name = findInLine("name", line);
+			if(name!=null)vibrationList.remove(name);
+			return;
+		}else if(line.contains("jnsexlab endall")){
 			vibrationList.removeAll();
+			return;
+		}else if (line.contains("jnequip ")){
+			equipedItemsName = findInLine("worn",line).split(",");
+			for (int i = 0; i < equipedItemsName.length; i++) {
+				equipedItems[i]=equipedItemsName[i]!="none"? true : false;
+			}
+			guiSkyrim.setEquipedLabel(equipedItemsName);
 		}
-		
-		VibrationSet vibSet = Vibration.get(name, pos, stage);
-		for (int i = 0; i < vibSet.size(); i++) {
-			vibrationList.add(vibSet.get(i));
+		else if (line.contains("jnpause")){pause = true;}
+		else if (line.contains("jnunpause")){pause = false;}
+		else if (line.contains("jnmute")){mute = true;}
+		else if (line.contains("jnunmute")){mute = false;}
+		else if (line.contains("jntimer")){
+			long t = System.currentTimeMillis();
+			float delta = (t - timer)/1000f;
+			guiSkyrim.setTimer(delta);
+			timer = t;
+		}else if (line.contains("jnCheckDebug ")){
+			line = line.substring(line.indexOf("debug:")+"debug:".length(),line.length());
+			guiSkyrim.addWaringToDebugScreen(line);
+		}else if (line.contains("jnstopall")){
+			removeAllVibrations();
+		}else if (line.contains("loading game...")) {
+			removeAllVibrations();
+			guiSkyrim.cleanDebugScreen();
+			guiSkyrim.addTextToDebugScreen("save game loaded(remove running vibrations)");
+		}else if (line.contains("log closed")) {
+			removeAllVibrations();
 		}
-		gui.addSexlabAnimation(vibSet);
-		
-		
 		
 	}
 
-	private static boolean[] equipedItems= new boolean[4];
-	private String[] equipedItemsName = new String[4];
-	private void lineCheckEquiped(String line){
-		System.out.println("test");
-		equipedItemsName = findInLine("worn",line).split(",");
-		for (int i = 0; i < equipedItemsName.length; i++) {
-			equipedItems[i]=equipedItemsName[i]!="none"? true : false;
-		}
-		gui.setEquipedLabel(equipedItemsName);
-	}
 	public static boolean[] getEquipedItems(){
 		return equipedItems;
 	}
 	
-	long timer = System.currentTimeMillis();
-	private void lineCheckTimer(String line){
-		long a = System.currentTimeMillis();
-		float delta = (a - timer)/1000f;
-		gui.setTimer(delta);
-		timer = a;
-	System.out.println("test");
-	}
-	
-	private void lineCheckDebug(String line){
-		line = line.substring(line.indexOf("debug:")+"debug:".length(),line.length());
-		gui.addWaringToDebugScreen(line);
-	}
-	
-	private void lineCheckStopAll(String line){
-		removeAllVibrations();
-	}
-	
-	private boolean mute = false;
-	private void lineCheckMute(String line){
-		mute = true;
-	}	
-	private void lineCheckUnMute(String line){
-		mute = false;
-	}
-	
-	private boolean pause = false;
-	private void lineCheckPause(String line){
-		pause = true;
-	}
-	private void lineCheckUnPause(String line){
-		pause = false;
-	}
-	
+
 	private String readNextLine() {
 		String line = null;
 		try {
@@ -415,7 +395,7 @@ public class SexlabMainThread{
 			e1.printStackTrace();
 		}// read line
 		if (line != null) {
-			gui.addOneToLineCounter();
+			guiSkyrim.addOneToLineCounter();
 
 			line = line.toLowerCase();
 		}
@@ -447,16 +427,16 @@ public class SexlabMainThread{
 		if (skyrimRunning) {
 			if (focusMessage) {
 				focusMessage = false;
-				gui.addWaringToDebugScreen("Skyrim in focus");
+				guiSkyrim.addWaringToDebugScreen("Skyrim in focus");
 			}
-			gui.setCheckGameFocus(true);
+			guiSkyrim.setCheckGameFocus(true);
 			return true;
 		} else {
 			if (!focusMessage) {
 				focusMessage = true;
-				gui.addWaringToDebugScreen("Lost Focus of Skyrim");
+				guiSkyrim.addWaringToDebugScreen("Lost Focus of Skyrim");
 			}
-			gui.setCheckGameFocus(false);
+			guiSkyrim.setCheckGameFocus(false);
 			return false;
 		}
 	}
@@ -468,23 +448,29 @@ public class SexlabMainThread{
 			if (vibratorList.isConnected(i)) {
 				if (controllerConnectedMessage[i]) {
 					controllerConnectedMessage[i] = false;
-					gui.addWaringToDebugScreen(vibratorList.getName(i)
+					guiSkyrim.addWaringToDebugScreen(vibratorList.getName(i)
 							+ " connected!");
 				}
-				gui.setCheckControllerConnected(true);
+				guiSkyrim.setCheckControllerConnected(true);
 			} else {
 				test = false;
 				if (!controllerConnectedMessage[i]) {
 					controllerConnectedMessage[i] = true;
-					gui.addWaringToDebugScreen(vibratorList.getName(i)
+					guiSkyrim.addWaringToDebugScreen(vibratorList.getName(i)
 							+ " disconnected!");
 				}
-				gui.setCheckControllerConnected(false);
+				guiSkyrim.setCheckControllerConnected(false);
 			}
 		}
 		return test;
 
 	}
+
+
+
+
+
+
 
 
 }

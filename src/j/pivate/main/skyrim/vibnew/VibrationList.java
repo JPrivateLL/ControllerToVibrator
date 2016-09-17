@@ -1,9 +1,8 @@
-package j.pivate.main.skyrim.vibration;
+package j.pivate.main.skyrim.vibnew;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import j.pivate.main.skyrim.vibration.types.Vibration;
 
 public class VibrationList {
 	private final List<Vibration> vibrationList = new ArrayList<Vibration>();
@@ -22,15 +21,12 @@ public class VibrationList {
 	}
 	
 	public float[] getStrength(){
-		float[] strengthMax = new float[10];
-		for (int type = 0; type < strengthMax.length; type++) {
-			for (Vibration vibration : vibrationList) {
-				if(vibration.getVibType()[type]){
-					float strength = vibration.getRumbleStrength();
-					if(strengthMax[type]<strength){
-						strengthMax[type] = strength;
-					}
-				}
+		float[] strengthMax = new float[Vibration.VIBTYPES.length];
+		for (Vibration vibration : vibrationList) {
+			int type = vibration.getVibType();
+			float strength = vibration.getRumbleStrength();
+			if(strengthMax[type]<strength){
+				strengthMax[type] = strength;
 			}
 		}
 		

@@ -9,47 +9,65 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 
 
 
 public class CustomVibrations {
 
-	private BufferedReader reader;
-	private BufferedWriter writer;
+	private static BufferedReader reader;
+	private static BufferedWriter writer;
 	
-	private File file;
+	private static File file = new File("CustomVibrations.txt");
 	
-	private List<VibrationSet> cvl = new ArrayList<VibrationSet>();
-	
-	public CustomVibrations(){
-		file = new File("CustomVibrations.txt");
-		open();
+	private static List<VibrationSet> list = new ArrayList<VibrationSet>();
+		
+	public static VibrationSet getSet(int nr){
+		if(nr>list.size()-1)return null;
+		lastSet = list.get(nr);
+		return list.get(nr);
+	}
+	public static VibrationSet getSet(String name, String[] tags){
+		for (VibrationSet vs : list) {
+			if(vs.getName().equals(name)){
+				lastSet = vs;
+				return vs;
+			}
+		}
+		
+		VibrationSet vs = new VibrationSet(name, tags);
+		lastSet = vs;
+		list.add(vs);
+		return vs;
+		
+		//create if non existing
 		
 		
-		save();
+	}
+	private static VibrationSet lastSet;
+	public static VibrationSet getLastSet(){
+		return lastSet;
 	}
 	
-	public VibrationSet getSet(int nr){
-		return cvl.get(nr);
-	}
-	
-	public String[] getNameList(){
-		String[] names = new String[cvl.size()];
+	public static String[] getNameList(){
+		String[] names = new String[list.size()];
 		for (int i = 0; i < names.length; i++) {
-			names[i] = cvl.get(i).getName();
+			names[i] = list.get(i).getName();
 		}
 		return names;
 	}
-	public int getPoss(int nr){
-		return cvl.get(nr).getPosSize();
+	public static int getPoss(int nr){
+		return list.get(nr).getPosSize();
 	}
-	public int getStages(int nr){
-		return cvl.get(nr).getStageSize();
+	public static int getStages(int nr){
+		return list.get(nr).getStageSize();
 	}
 
 	
-	public void open(){
+	public static void load(){
 		try {
 		
 			
@@ -81,14 +99,14 @@ public class CustomVibrations {
 					String name = lines[0];
 					String[] tags = Arrays.copyOfRange(lines, 1, lines.length);
 					vs = new VibrationSet(name, tags);
-					cvl.add(vs);
+					list.add(vs);
 				}else if(line.startsWith("@")){
 					line = line.substring(1, line.length());
 					String[] lines = line.split(", ");
 					int pos = Integer.valueOf(lines[0]);
 					int stage = Integer.valueOf(lines[1]);
-					vg = new VibrationGroup(pos, stage);
-					vs.add(vg);
+					vg = new VibrationGroup(stage, pos);
+					vs.addExisting(vg);
 				}else if(line.startsWith("#")){
 					line = line.substring(1, line.length());
 					String[] lines = line.split(", ");
@@ -101,7 +119,7 @@ public class CustomVibrations {
 					float onTime = Float.valueOf(lines[6]);
 					float startDelay = Float.valueOf(lines[7]);
 					float amount = Float.valueOf(lines[8]);
-					vg.add(Vibration.create(vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount));
+					vg.add(Vibration.create(null,0,0,vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount));
 				}
 				
 			}
@@ -113,8 +131,17 @@ public class CustomVibrations {
 		}
 	}
 	
-	public void save(){
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void save(){
 	
+		Collections.sort(list, new Comparator() {
+            @Override
+            public int compare(Object softDrinkOne, Object softDrinkTwo) {
+                return ((VibrationSet)softDrinkOne).getName()
+                        .compareTo((((VibrationSet) softDrinkTwo).getName()));
+            }
+        }); 
+		
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
 			
@@ -131,7 +158,7 @@ public class CustomVibrations {
 			
 			
 			//write all vibrations
-			for (VibrationSet vSet : cvl) {
+			for (VibrationSet vSet : list) {
 				writer.write("!"+vSet.getName()+", "+Arrays.toString(vSet.getTags()));
 				writer.newLine();	
 				for (int pos = 0; pos < vSet.getPosSize(); pos++) {
@@ -159,8 +186,4 @@ public class CustomVibrations {
 
 	}
 
-
-	public VibrationGroup getGroup(int nr, int stage, int pos) {
-		return getSet(nr).getGroup(stage,pos);
-	}
 }

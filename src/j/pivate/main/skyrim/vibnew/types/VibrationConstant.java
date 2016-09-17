@@ -4,17 +4,13 @@ import j.pivate.main.skyrim.vibnew.Vibration;
 
 public class VibrationConstant extends Vibration {
 
-	public VibrationConstant(int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
-		super(vibType, 0,  strength, minStrength, interval, time, onTime, startDelay, amount);
+	public VibrationConstant(String name, int stage, int pos, int vibType, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount) {
+		super(name, stage, pos, vibType, 0,  strength, minStrength, interval, time, onTime, startDelay, amount);
 		
 	}
-	public VibrationConstant() {
-		super(0,0,  0, 0, 0, 0, 0, 0, 0);
-	}
-
 
 	@Override
-	protected float getRumbleStrengthOverride() {
+	protected float getRumbleStrengthAbstract() {
 		return strength;
 	}
 
@@ -48,31 +44,31 @@ public class VibrationConstant extends Vibration {
 	}
 
 	@Override
-	public boolean usableStrength() {
+	public boolean usableStrengthAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableMinStrength() {
+	public boolean usableMinStrengthAbstract() {
 		return false;
 	}
 	@Override
-	public boolean usableTime() {
+	public boolean usableTimeAbstract() {
 		return true;
 	}
 	@Override
-	public boolean usableInterval() {
+	public boolean usableIntervalAbstract() {
 		return false;
 	}
 	@Override
-	public boolean usableAmount() {
+	public boolean usableAmountAbstract() {
 		return false;
 	}
 	@Override
-	public boolean usableOnTime() {
+	public boolean usableOnTimeAbstract() {
 		return false;
 	}
 	@Override
-	public boolean usableStartDelay() {
+	public boolean usableStartDelayAbstract() {
 		return true;
 	}
 

@@ -1,14 +1,14 @@
-package j.pivate.main.skyrim;
+package j.pivate.main.skyrim.vibnew;
 
 import java.util.List;
 
 import j.pivate.main.vibrator.Vibrator;
 
-public class SexlabVibratorList {
+public class VibratorList {
 	private List<Vibrator> vibrators;
 
 	
-	public SexlabVibratorList(List<Vibrator> vibrators){
+	public VibratorList(List<Vibrator> vibrators){
 		this.vibrators = vibrators;
 	}
 	

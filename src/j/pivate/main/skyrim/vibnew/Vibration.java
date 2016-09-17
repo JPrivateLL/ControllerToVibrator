@@ -12,6 +12,9 @@ public abstract class Vibration {
 	public static final String[] TYPES = {"Constant", "Interval", "Sine", "Up", "Down", "Random"};
 	public static final String[] VIBTYPES = {"Viginal", "Viginal (shock)", "Anal", "Anal (shock)", "Breasts", "Breasts (shock)", "Oral", "Oral (shock)", "Damage", "Damage (shock)", "Interaction", "Interaction (shock)"};
 	
+	protected String name;
+	protected int stage;
+	protected int pos;
 	protected int vibType;
 	protected int type;
 	protected float strength;
@@ -22,8 +25,12 @@ public abstract class Vibration {
 	protected float startDelay;
 	protected float amount;
 	
-	public Vibration(int vibType, int type, float strength, float minStrength,		float interval, float time, float onTime, float startDelay, float amount){
+	public Vibration(String name, int stage, int pos, int vibType, int type, float strength, float minStrength, float interval, float time, float onTime, float startDelay, float amount){
 
+		this.name = name;
+		this.stage = stage;
+		this.pos = pos;
+		
 		this.vibType = vibType;
 		this.type = type;
 		this.strength = strength;
@@ -37,32 +44,32 @@ public abstract class Vibration {
 		this.timer = 0;
 	}
 	
-	public static Vibration create(int vibType, int type, float strength, float minStrength,		float interval, float time, float onTime, float startDelay, float amount){
+	public static Vibration create(String name, int stage, int pos, int vibType, int type, float strength, float minStrength,float interval, float time, float onTime, float startDelay, float amount){
 		switch (type) {
 		case 0:
-			return new VibrationConstant(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationConstant(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		case 1:
-			return new VibrationInterval(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationInterval(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		case 2:
-			return new VibrationSine(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationSine(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		case 3:
-			return new VibrationUp(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationUp(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		case 4:
-			return new VibrationDown(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationDown(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		case 5:
-			return new VibrationRandom(vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
+			return new VibrationRandom(name, stage, pos, vibType,strength,minStrength,interval,time,onTime,startDelay,amount); 
 		default:
 			return null; 
 		}
 	}
 	
-	protected abstract float getRumbleStrengthOverride();
+	protected abstract float getRumbleStrengthAbstract();
 	
-	public Vibration clone(){
-		return create(vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount);
+	public Vibration clone(String name, int stage, int pos){
+		return create(name, stage, pos, vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount);
 	}
-	public Vibration clone(int type){
-		return create(vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount);
+	public Vibration clone(String name, int stage, int pos, int type){
+		return create(name, stage, pos, vibType,type,strength,minStrength,interval,time,onTime,startDelay,amount);
 	}
 	
 	private float timer;
@@ -86,7 +93,7 @@ public abstract class Vibration {
 		}
 		
 		//run corresponding vibration
-		return getRumbleStrengthOverride();
+		return getRumbleStrengthAbstract();
 	}
 	
 	public void update(float delta){
@@ -140,13 +147,36 @@ public abstract class Vibration {
 	public abstract boolean requiresOnTimeAbstract();
 	public abstract boolean requiresStartDelayAbstract();
 	
-	public abstract boolean usableStrength();
-	public abstract boolean usableMinStrength();
-	public abstract boolean usableTime();
-	public abstract boolean usableInterval();
-	public abstract boolean usableAmount();
-	public abstract boolean usableOnTime();
-	public abstract boolean usableStartDelay();
+	public boolean usableStrength(){
+		return usableStrengthAbstract();
+	}
+	public boolean usableMinStrength(){
+		if(strength == 0)return false;
+		return usableMinStrengthAbstract();
+	}
+	public boolean usableTime(){
+		return usableTimeAbstract();
+	}
+	public boolean usableInterval(){
+		return usableIntervalAbstract();
+	}
+	public boolean usableAmount(){
+		return usableAmountAbstract();
+	}
+	public boolean usableOnTime(){
+		return usableOnTimeAbstract();
+	}
+	public boolean usableStartDelay(){
+		return usableStartDelayAbstract();
+	}
+	
+	public abstract boolean usableStrengthAbstract();
+	public abstract boolean usableMinStrengthAbstract();
+	public abstract boolean usableTimeAbstract();
+	public abstract boolean usableIntervalAbstract();
+	public abstract boolean usableAmountAbstract();
+	public abstract boolean usableOnTimeAbstract();
+	public abstract boolean usableStartDelayAbstract();
 
 	public void setType(int type){
 		this.type = type;
@@ -266,8 +296,14 @@ public abstract class Vibration {
 		return startDelay;
 	}
 
-	
-
-	
+	public String getName(){
+		return name;
+	}
+	public int getStage(){
+		return stage;
+	}
+	public int getPos(){
+		return pos;
+	}
 	
 }

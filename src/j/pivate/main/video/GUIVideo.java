@@ -1,6 +1,4 @@
-package j.pivate.main.gui;
-
-import j.pivate.main.video.VideoRumble;
+package j.pivate.main.video;
 
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
@@ -29,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import j.pivate.main.gui.GUIStartMenu;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.JProgressBar;

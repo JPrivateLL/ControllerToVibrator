@@ -3,6 +3,7 @@ package j.pivate.main.gui;
 import gnu.io.NoSuchPortException;
 import j.pivate.main.Start;
 import j.pivate.main.skyrim.SexlabMainThread;
+import j.pivate.main.sound.GUIMicrofone;
 import j.pivate.main.vibrator.Vibrator;
 import j.pivate.main.vibrator.VibratorArduino;
 import j.pivate.main.vibrator.VibratorJavaController;

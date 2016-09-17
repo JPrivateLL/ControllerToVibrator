@@ -9,7 +9,7 @@ private List<Vibration> list = new ArrayList<Vibration>();
 	private int pos, stage;
 	
 
-	public VibrationGroup(int pos, int stage){
+	public VibrationGroup(int stage, int pos){
 		this.pos = pos;
 		this.stage  = stage;
 	}
@@ -42,5 +42,19 @@ private List<Vibration> list = new ArrayList<Vibration>();
 	public void remove(int i) {
 		list.remove(i);
 		
+	}
+
+
+	public void swap(int from, int to) {
+		int size = list.size();
+	 	
+		if(from<0||from>size)return;
+		if(to<0||to>size)return;
+		
+		Vibration VFrom = list.get(from);
+		Vibration VTo = list.get(to);
+		
+		list.set(from, VTo);
+		list.set(to, VFrom);
 	}
 }

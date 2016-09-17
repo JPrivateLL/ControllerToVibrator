@@ -2,7 +2,6 @@ package j.pivate.main.vibrator;
 
 import gnu.io.NoSuchPortException;
 import j.pivate.main.Arduino;
-import j.pivate.main.gui.GUIStartMenu;
 
 import org.sintef.jarduino.PWMPin;
 
@@ -61,11 +60,9 @@ public class VibratorArduino extends Vibrator {
 			strength = (strength * (255 - minStrength)) + minStrength;
 		
 		if(pin == PWMPin.PWM_PIN_5){
-			System.out.println("testaa"+strength);
 			strength/=4;
 		}
 		if(pin == PWMPin.PWM_PIN_3){
-			System.out.println("testaa"+strength);
 			strength/=2;
 		}
 		

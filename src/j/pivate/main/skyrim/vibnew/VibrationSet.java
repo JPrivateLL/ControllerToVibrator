@@ -3,6 +3,7 @@ package j.pivate.main.skyrim.vibnew;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class VibrationSet {
 	private List<VibrationGroup> list  = new ArrayList<VibrationGroup>();
 	
@@ -14,9 +15,6 @@ public class VibrationSet {
 		this.tags = tags;
 	}
 	
-	public void add(VibrationGroup vg){
-		list.add(vg);
-	}
 	
 	public String getName(){
 		return name;
@@ -52,11 +50,25 @@ public class VibrationSet {
 	public VibrationGroup getGroup(int stage, int pos) {
 		for ( VibrationGroup  vg : list) {
 			if(vg.getPos()==pos&&vg.getStage()==stage){
+				lastGroup = vg;
 				return vg;
 			}
 		}
-		return null;
+		//create if null
+		VibrationGroup  vg = new VibrationGroup(stage,pos);
+		lastGroup = vg;
+		list.add(vg);
+		return vg;
 		
 	}
 
+	private VibrationGroup lastGroup;
+	public VibrationGroup getLastGroup(){
+		return lastGroup;
+	}
+
+
+	public void addExisting(VibrationGroup vg) {
+		list.add(vg);
+	}
 }
