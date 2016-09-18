@@ -1,4 +1,11 @@
-package j.pivate.main.skyrim.vibnew.types;
+package j.pivate.main.skyrim.vibnew;
+
+import j.pivate.main.skyrim.vibnew.types.VibrationConstant;
+import j.pivate.main.skyrim.vibnew.types.VibrationDown;
+import j.pivate.main.skyrim.vibnew.types.VibrationInterval;
+import j.pivate.main.skyrim.vibnew.types.VibrationRandom;
+import j.pivate.main.skyrim.vibnew.types.VibrationSine;
+import j.pivate.main.skyrim.vibnew.types.VibrationUp;
 
 public abstract class Vibration {
 
@@ -9,9 +16,6 @@ public abstract class Vibration {
 			"Oral (shock)", "Damage", "Damage (shock)", "Interaction",
 			"Interaction (shock)" };
 
-	protected String name;
-	protected int stage;
-	protected int pos;
 	protected int vibType;
 	protected int type;
 	protected float strength;
@@ -22,13 +26,9 @@ public abstract class Vibration {
 	protected float startDelay;
 	protected float amount;
 
-	public Vibration(String name, int stage, int pos, int vibType, int type,
+	protected Vibration(int vibType, int type,
 			float strength, float minStrength, float interval, float time,
 			float onTime, float startDelay, float amount) {
-
-		this.name = name;
-		this.stage = stage;
-		this.pos = pos;
 
 		this.vibType = vibType;
 		this.type = type;
@@ -43,27 +43,26 @@ public abstract class Vibration {
 		this.timer = 0;
 	}
 
-	public static Vibration create(String name, int stage, int pos, int vibType,
-			int type, float strength, float minStrength, float interval,
+	public static Vibration create(int vibType, int type, float strength, float minStrength, float interval,
 			float time, float onTime, float startDelay, float amount) {
 		switch (type) {
 		case 0:
-			return new VibrationConstant(name, stage, pos, vibType, strength,
+			return new VibrationConstant(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		case 1:
-			return new VibrationInterval(name, stage, pos, vibType, strength,
+			return new VibrationInterval(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		case 2:
-			return new VibrationSine(name, stage, pos, vibType, strength,
+			return new VibrationSine(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		case 3:
-			return new VibrationUp(name, stage, pos, vibType, strength,
+			return new VibrationUp(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		case 4:
-			return new VibrationDown(name, stage, pos, vibType, strength,
+			return new VibrationDown(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		case 5:
-			return new VibrationRandom(name, stage, pos, vibType, strength,
+			return new VibrationRandom(vibType, strength,
 					minStrength, interval, time, onTime, startDelay, amount);
 		default:
 			return null;
@@ -72,13 +71,13 @@ public abstract class Vibration {
 
 	protected abstract float getRumbleStrengthAbstract();
 
-	public Vibration clone(String name, int stage, int pos) {
-		return create(name, stage, pos, vibType, type, strength, minStrength,
+	public Vibration clone() {
+		return create(vibType, type, strength, minStrength,
 				interval, time, onTime, startDelay, amount);
 	}
 
-	public Vibration clone(String name, int stage, int pos, int type) {
-		return create(name, stage, pos, vibType, type, strength, minStrength,
+	public Vibration clone(int type) {
+		return create(vibType, type, strength, minStrength,
 				interval, time, onTime, startDelay, amount);
 	}
 
@@ -358,16 +357,5 @@ public abstract class Vibration {
 		return startDelay;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public int getStage() {
-		return stage;
-	}
-
-	public int getPos() {
-		return pos;
-	}
 
 }

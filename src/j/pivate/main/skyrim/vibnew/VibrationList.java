@@ -13,8 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import j.pivate.main.skyrim.vibnew.types.Vibration;
-
 public class VibrationList {
 
 	private static BufferedReader reader;
@@ -22,54 +20,98 @@ public class VibrationList {
 
 	private static File file = new File("CustomVibrations.txt");
 
-	private static List<VibrationSet> list = new ArrayList<VibrationSet>();
-
-	public static VibrationSet getSet(int nr) {
-		if (nr > list.size() - 1)
-			return null;
-		lastSet = list.get(nr);
+	private static List<VibrationGroup> list = new ArrayList<VibrationGroup>();
+	
+	public static VibrationGroup get(int nr) {
+		if (nr > list.size() - 1)return null;
+		lastGroup = list.get(nr);
 		return list.get(nr);
 	}
 
-	public static VibrationSet getSet(String name, String[] tags) {
-		for (VibrationSet vs : list) {
-			if (vs.getName().equals(name)) {
-				lastSet = vs;
-				return vs;
+	public static VibrationGroup get(String name1, String name2, String name3, String name4) {
+		for (VibrationGroup v : list) {
+			if (v.getName1().equals(name1) && v.getName2().equals(name2) && v.getName3().equals(name3)) {
+				lastGroup = v;
+				return v;
 			}
 		}
-
-		VibrationSet vs = new VibrationSet(name, tags);
-		lastSet = vs;
-		list.add(vs);
-		return vs;
-
+		
 		// create if non existing
+		
+		VibrationGroup vg = new VibrationGroup(name1, name2, name3, name4);
+		lastGroup = vg;
+		list.add(vg);
+		return vg;
+
+		
 
 	}
 
-	private static VibrationSet lastSet;
+	private static VibrationGroup lastGroup;
 
-	public static VibrationSet getLastSet() {
-		return lastSet;
+	public static VibrationGroup getLast() {
+		return lastGroup;
 	}
 
-	public static String[] getNameList() {
+	public static String[] getName1List() {
 		String[] names = new String[list.size()];
 		for (int i = 0; i < names.length; i++) {
-			names[i] = list.get(i).getName();
+			names[i] = list.get(i).getName1();
+		}
+		return names;
+	}
+	
+	public static String[] getName2List(String name1) {
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1()))
+				names[i] = list.get(i).getName2();
+		}
+		return names;
+	}
+	
+	public static String[] getName3List(String name1,String name2) {
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1())){
+				if(name2.equals(list.get(i).getName2())){
+					names[i] = list.get(i).getName3();
+				}
+			}
 		}
 		return names;
 	}
 
-	public static int getPoss(int nr) {
-		return list.get(nr).getPosSize();
+	public static String[] getName4List(String name1,String name2, String name3) {
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1())){
+				if(name2.equals(list.get(i).getName2())){
+					if(name3.equals(list.get(i).getName3())){
+						names[i] = list.get(i).getName4();
+					}
+				}
+			}
+		}
+		return names;
+	}
+	
+	public static String getname1(int nr) {
+		return get(nr).getName1();
 	}
 
-	public static int getStages(int nr) {
-		return list.get(nr).getStageSize();
+	public static String getname2(int nr) {
+		return get(nr).getName2();
+	}
+	
+	public static String getname3(int nr) {
+		return get(nr).getName3();
 	}
 
+	public static String getname4(int nr) {
+		return get(nr).getName4();
+	}
+	
 	public static void load() {
 		try {
 
@@ -84,32 +126,54 @@ public class VibrationList {
 				e2.printStackTrace();
 			}
 
-			String line = null;
-			VibrationSet vs = null;
+			String name1="";
+			String name2="";
+			String name3="";
+			String name4="";
 			VibrationGroup vg = null;
-
+			String[] tags={};
+			String line = null;
 			while (true) {
 				line = reader.readLine();
 				if (line == null)
 					break;
 
 				if (line.startsWith("!")) {
+					//name1 (sexlab)
+					line = line.substring(1, line.length());
+					
+					//out
+					name1 = line;
+					
+				} else if (line.startsWith("@")) {
+					//name2 (doggy)
 					line = line.substring(1, line.length());
 					line = line.replace("[", "");
 					line = line.replace("]", "");
 					String[] lines = line.split(", ");
-					String name = lines[0];
-					String[] tags = Arrays.copyOfRange(lines, 1, lines.length);
-					vs = new VibrationSet(name, tags);
-					list.add(vs);
-				} else if (line.startsWith("@")) {
-					line = line.substring(1, line.length());
-					String[] lines = line.split(", ");
-					int pos = Integer.valueOf(lines[0]);
-					int stage = Integer.valueOf(lines[1]);
-					vg = new VibrationGroup(stage, pos);
-					vs.addExisting(vg);
+					
+					//out
+					name2 = lines[0];
+					tags = Arrays.copyOfRange(lines, 1, lines.length);
+					
 				} else if (line.startsWith("#")) {
+					//name3 (stage)
+					line = line.substring(1, line.length());
+
+					//out
+					name3 = line;
+					
+				} else if (line.startsWith("$")) {
+					//name4 (pos)
+					line = line.substring(1, line.length());
+					
+					//out
+					name4 = line;
+					vg = new VibrationGroup(name1, name2, name3, name4);
+					vg.setTags(tags);
+					
+				}else if(line.startsWith("%")){
+					//vibrations
 					line = line.substring(1, line.length());
 					String[] lines = line.split(", ");
 					int vibType = Integer.valueOf(lines[0]);
@@ -121,11 +185,11 @@ public class VibrationList {
 					float onTime = Float.valueOf(lines[6]);
 					float startDelay = Float.valueOf(lines[7]);
 					float amount = Float.valueOf(lines[8]);
-					vg.add(Vibration.create(null, 0, 0, vibType, type, strength,
+					
+					vg.add(Vibration.create(vibType, type, strength,
 							minStrength, interval, time, onTime, startDelay,
 							amount));
 				}
-
 			}
 
 			reader.close();
@@ -135,57 +199,83 @@ public class VibrationList {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void save() {
 
-		Collections.sort(list, new Comparator() {
+		Collections.sort(list, new Comparator<VibrationGroup>() {
 			@Override
-			public int compare(Object softDrinkOne, Object softDrinkTwo) {
-				return ((VibrationSet) softDrinkOne).getName()
-						.compareTo((((VibrationSet) softDrinkTwo).getName()));
+			public int compare(VibrationGroup o1, VibrationGroup o2) {
+				return o1.getName1().compareTo(o2.getName1());
 			}
 		});
+		Collections.sort(list, new Comparator<VibrationGroup>() {
+			@Override
+			public int compare(VibrationGroup o1, VibrationGroup o2) {
+				return o1.getName2().compareTo(o2.getName2());
+			}
+		});
+		Collections.sort(list, new Comparator<VibrationGroup>() {
+			@Override
+			public int compare(VibrationGroup o1, VibrationGroup o2) {
+				return o1.getName3().compareTo(o2.getName3());
+			}
+		});
+		Collections.sort(list, new Comparator<VibrationGroup>() {
+			@Override
+			public int compare(VibrationGroup o1, VibrationGroup o2) {
+				return o1.getName4().compareTo(o2.getName4());
+			}
+		});
+
 
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
 
 			// write commands
-			writer.write(
-					"; use vibration editor in the program do not change this manually.");
+			writer.write("Do not change this manually!");
 			writer.newLine();
-			writer.write("; ! = name, tags");
-			writer.newLine();
-			writer.write("; @ = stage, place");
-			writer.newLine();
-			writer.write(
-					"; # = vibration type, strength, minimum strength, interval, time, ON time(for interval), start delay, amount");
+			writer.write("Automaticly created file");
 			writer.newLine();
 			writer.newLine();
-
-			// write all vibrations
-			for (VibrationSet vSet : list) {
-				writer.write("!" + vSet.getName() + ", "
-						+ Arrays.toString(vSet.getTags()));
-				writer.newLine();
-				for (int pos = 0; pos < vSet.getPosSize(); pos++) {
-					for (int stage = 0; stage < vSet.getStageSize(); stage++) {
-						VibrationGroup vGroup = vSet.getGroup(stage, pos);
-						if (vGroup == null)
-							continue;
-						writer.write("@" + vGroup.getPos() + ", "
-								+ vGroup.getStage());
+			
+			// write all vibrations if needed
+			if(list.size()!=0){
+				String name1="";
+				String name2="";
+				String name3="";
+				String name4="";
+				for (VibrationGroup vg : list) {
+					if(!vg.getName1().equals(name1)){
+						name1 = vg.getName1();
+						writer.write("!"+name1);
 						writer.newLine();
-						for (int i = 0; i < vGroup.size(); i++) {
-							Vibration vib = vGroup.get(i);
-							writer.write("#" + vib.getVibType() + ", "
-									+ vib.getType() + ", " + vib.getStrength()
-									+ ", " + vib.getMinStrength() + ", "
-									+ vib.getInterval() + ", " + vib.getTime()
-									+ ", " + vib.getOnTime() + ", "
-									+ vib.getStartDelay() + ", "
-									+ vib.getAmount());
-							writer.newLine();
-						}
+					}
+					if(!vg.getName2().equals(name2)){
+						name2 = vg.getName2();
+						writer.write("@"+name2+(vg.getTags()==null?"":(", "+vg.getTags())));
+						writer.newLine();
+					}
+					if(!vg.getName3().equals(name3)){
+						name3 = vg.getName3();
+						writer.write("#"+name3);
+						writer.newLine();
+					}
+					if(!vg.getName4().equals(name4)){
+						name4 = vg.getName4();
+						writer.write("$"+name4);
+						writer.newLine();
+					}
+					for (Vibration v : vg.getList()) {
+						writer.write("%" + 
+								v.getVibType() + ", "+ 
+								v.getType() + ", " + 
+								v.getStrength()	+ ", " + 
+								v.getMinStrength() + ", "+ 
+								v.getInterval() + ", " + 
+								v.getTime()	+ ", " + 
+								v.getOnTime() + ", " + 
+								v.getStartDelay() + ", "+ 
+								v.getAmount());
+						writer.newLine();
 					}
 				}
 				writer.newLine();

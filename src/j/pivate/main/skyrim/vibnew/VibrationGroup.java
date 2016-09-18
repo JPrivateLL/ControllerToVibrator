@@ -3,18 +3,30 @@ package j.pivate.main.skyrim.vibnew;
 import java.util.ArrayList;
 import java.util.List;
 
-import j.pivate.main.skyrim.vibnew.types.Vibration;
-
 public class VibrationGroup {
 	private List<Vibration> list = new ArrayList<Vibration>();
 
-	private int pos, stage;
-
-	public VibrationGroup(int stage, int pos) {
-		this.pos = pos;
-		this.stage = stage;
+	private String name1;
+	private String name2;
+	private String name3;
+	private String name4;
+	private String[] tags;
+	
+	public VibrationGroup(String name1, String name2, String name3, String name4) {
+		this.name1 = name1;
+		this.name2 = name2;
+		this.name3 = name3;
+		this.name4 = name4;
 	}
 
+
+	public VibrationGroup clone(){
+		//clone 
+		VibrationGroup vg = new VibrationGroup(this.getName1(),this.getName2(),this.getName3(),this.getName4());
+		vg.setTags(this.tags);
+		return vg;
+	}
+	
 	public void add(Vibration v) {
 		list.add(v);
 	}
@@ -29,14 +41,6 @@ public class VibrationGroup {
 
 	public int size() {
 		return list.size();
-	}
-
-	public int getPos() {
-		return pos;
-	}
-
-	public int getStage() {
-		return stage;
 	}
 
 	public void remove(int i) {
@@ -57,5 +61,33 @@ public class VibrationGroup {
 
 		list.set(from, VTo);
 		list.set(to, VFrom);
+	}
+
+	public String getName1() {
+		return name1;
+	}
+
+	public String getName2() {
+		return name2;
+	}
+
+	public String getName3() {
+		return name3;
+	}
+	
+	public String getName4() {
+		return name4;
+	}
+
+	public String[] getTags(){
+		return tags;
+	}
+
+	public void setTags(String[] tags){
+		this.tags=tags;
+	}
+
+	public List<Vibration> getList() {
+		return list;
 	}
 }

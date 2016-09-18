@@ -3,30 +3,32 @@ package j.pivate.main.skyrim.vibnew;
 import java.util.ArrayList;
 import java.util.List;
 
-import j.pivate.main.skyrim.vibnew.types.Vibration;
-
 public class RunningVibrations {
-	private final List<Vibration> vibrationList = new ArrayList<Vibration>();
+	private final List<VibrationGroup> list = new ArrayList<VibrationGroup>();
 
-	public void update(float delta) {
+	public void update(float delta) {	
 		// reverse loop, to make sure removed items don't crash the loop.
-		for (int i = vibrationList.size() - 1; i >= 0; i--) {
-			Vibration vibration = vibrationList.get(i);
-			vibration.update(delta);
-			if (vibration.removeMe()) {
-				vibrationList.remove(vibration);
+		for (int i = list.size() - 1; i >= 0; i--) {
+			VibrationGroup vg = list.get(i);
+			List<Vibration> list2 = vg.getList();
+			for (int j = list2.size() - 1; j >= 0; j--) {
+				Vibration v = list2.get(j);
+				v.update(delta);
+				if (v.removeMe())list2.remove(v);
 			}
+			if(list2.size()==0)list.remove(i);
 		}
-
 	}
-
+	
 	public float[] getStrength() {
 		float[] strengthMax = new float[Vibration.VIBTYPES.length];
-		for (Vibration vibration : vibrationList) {
-			int type = vibration.getVibType();
-			float strength = vibration.getRumbleStrength();
-			if (strengthMax[type] < strength) {
-				strengthMax[type] = strength;
+		for (VibrationGroup vg : list) {
+			for(Vibration v : vg.getList()){
+				int type = v.getVibType();
+				float strength = v.getRumbleStrength();
+				if (strengthMax[type] < strength) {
+					strengthMax[type] = strength;
+				}
 			}
 		}
 
@@ -35,25 +37,24 @@ public class RunningVibrations {
 	}
 
 	public void removeAll() {
-		vibrationList.clear();
+		list.clear();
 	}
 
 	public int size() {
-		return vibrationList.size();
+		return list.size();
 	}
 
-	public void add(Vibration vib) {
-		vibrationList.add(vib);
+	public void add(VibrationGroup vib) {
+		list.add(vib);
 	}
 
-	public void remove(String name) {
+	public void remove(String name1, String name2, String name3, String name4) {
 		// reverse loop, to make sure removed items don't crash the loop.
-		for (int i = vibrationList.size() - 1; i >= 0; i--) {
-			Vibration vibration = vibrationList.get(i);
-			if (vibration.getName().equals(name)) {
-				vibrationList.remove(vibration);
+		for (int i = list.size() - 1; i >= 0; i--) {
+			VibrationGroup vg = list.get(i);
+			if (vg.getName1().equals(name1) && vg.getName2().equals(name2) && vg.getName3().equals(name3) && vg.getName4().equals(name4)) {
+				list.remove(vg);
 			}
 		}
 	}
-
 }

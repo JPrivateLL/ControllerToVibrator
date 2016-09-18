@@ -3,10 +3,9 @@ package j.pivate.main.skyrim;
 import j.pivate.main.gui.GUIStartMenu;
 import j.pivate.main.skyrim.vibnew.VibrationList;
 import j.pivate.main.skyrim.vibnew.VibratorList;
-import j.pivate.main.skyrim.vibnew.types.Vibration;
 import j.pivate.main.skyrim.vibnew.VibrationGroup;
 import j.pivate.main.skyrim.vibnew.RunningVibrations;
-import j.pivate.main.skyrim.vibnew.VibrationSet;
+import j.pivate.main.skyrim.vibnew.Vibration;
 import j.pivate.main.vibrator.Vibrator;
 
 import java.io.BufferedReader;
@@ -254,10 +253,6 @@ public class SexlabMainThread extends passClass {
 		System.exit(1);
 	}
 
-	public void testVibration(Vibration v) {
-		vibrationList.add(v);
-	}
-
 	private boolean running = true;
 
 	public Thread thread2 = null;
@@ -317,10 +312,17 @@ public class SexlabMainThread extends passClass {
 		}
 		if (line.contains("jnstart")) {
 			// get name
-			String name = findInLine("name", line);
-			if (name == null)
-				return;
-
+			String name1 = findInLine("name1", line);
+			String name2 = findInLine("name2", line);
+			String name3 = findInLine("name3", line);
+			String name4 = findInLine("name4", line);
+			if (name1 == null)return;
+			if (name2 == null)return;
+			if (name3 == null)name3="";
+			if (name4 == null)name4="";
+			
+			
+			
 			// get tags
 			String tag = findInLine("tags", line.replace(" ", ""));
 			String[] tags = null;
@@ -348,11 +350,9 @@ public class SexlabMainThread extends passClass {
 				pos = 0;
 			}
 
-			// get set
-			VibrationSet vs = VibrationList.getSet(name, tags);
 
 			// get group
-			VibrationGroup vg = vs.getGroup(stage, pos);
+			VibrationGroup vg = VibrationList.get(name1, name2, name3, name4);
 
 			if (passClass.guiAnimation != null) {
 				passClass.guiAnimation.updateVibration();

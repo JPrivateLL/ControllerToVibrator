@@ -1,11 +1,12 @@
 package j.pivate.main.skyrim.vibnew.types;
 
+import j.pivate.main.skyrim.vibnew.Vibration;
+
 public class VibrationUp extends Vibration {
 
-	public VibrationUp(String name, int stage, int pos, int vibType,
-			float strength, float minStrength, float interval, float time,
+	public VibrationUp(int vibType, float strength, float minStrength, float interval, float time,
 			float onTime, float startDelay, float amount) {
-		super(name, stage, pos, vibType, 3, strength, minStrength, interval,
+		super(vibType, 3, strength, minStrength, interval,
 				time, onTime, startDelay, amount);
 
 	}

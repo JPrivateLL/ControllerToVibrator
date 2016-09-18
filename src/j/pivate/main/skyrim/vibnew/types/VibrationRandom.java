@@ -1,11 +1,13 @@
 package j.pivate.main.skyrim.vibnew.types;
 
+import j.pivate.main.skyrim.vibnew.Vibration;
+
 public class VibrationRandom extends Vibration {
 
-	public VibrationRandom(String name, int stage, int pos, int vibType,
+	public VibrationRandom(int vibType,
 			float strength, float minStrength, float interval, float time,
 			float onTime, float startDelay, float amount) {
-		super(name, stage, pos, vibType, 5, strength, minStrength, interval,
+		super(vibType, 5, strength, minStrength, interval,
 				time, onTime, startDelay, amount);
 
 	}

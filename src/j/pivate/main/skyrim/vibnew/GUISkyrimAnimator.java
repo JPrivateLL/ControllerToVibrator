@@ -22,7 +22,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import j.pivate.main.skyrim.passClass;
-import j.pivate.main.skyrim.vibnew.types.Vibration;
 import j.pivate.main.skyrim.vibnew.types.VibrationConstant;
 
 import java.awt.event.ActionListener;
@@ -40,19 +39,17 @@ public class GUISkyrimAnimator extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private DefaultTableModel model;
-	private JComboBox<String> cboxName;
-	private JComboBox<Integer> cboxPos;
-	private JComboBox<Integer> cboxStage;
-	private JComboBox<String> cboxType;
+	private JComboBox<String> cboxName1;
+	private JComboBox<String> cboxName2;
+	private JComboBox<String> cboxName3;
+	private JComboBox<String> cboxName4;
 	private JComboBox<String> cboxVibTypes;
 	private JComboBox<String> cboxTypes;
 	private JLabel LBLTAGS;
 
 	private VibrationGroup vg;
-	private VibrationSet vs;
 
-	public GUISkyrimAnimator(VibrationSet vs1, VibrationGroup vg1) {
-		this.vs = vs1;
+	public GUISkyrimAnimator(VibrationGroup vg1) {
 		this.vg = vg1;
 		passClass.guiAnimation = this;
 
@@ -72,19 +69,17 @@ public class GUISkyrimAnimator extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 5, 0, 0));
 		
-		cboxType = new JComboBox<String>();
-		cboxType.setModel(new DefaultComboBoxModel<String>(new String[] {"Sexlab", "Devious Devices", "Other"}));
-		panel.add(cboxType);
+		cboxName1 = new JComboBox<String>();
+		panel.add(cboxName1);
 
-		cboxName = new JComboBox<String>();
-		cboxName.setModel(new DefaultComboBoxModel<String>(VibrationList.getNameList()));
-		panel.add(cboxName);
+		cboxName2 = new JComboBox<String>();
+		panel.add(cboxName2);
 
-		cboxStage = new JComboBox<Integer>();
-		panel.add(cboxStage);
+		cboxName3 = new JComboBox<String>();
+		panel.add(cboxName3);
 
-		cboxPos = new JComboBox<Integer>();
-		panel.add(cboxPos);
+		cboxName4 = new JComboBox<String>();
+		panel.add(cboxName4);
 
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.EAST);
@@ -184,43 +179,31 @@ public class GUISkyrimAnimator extends JFrame {
 		panel_2.add(new JScrollPane(table));
 
 		
-		cboxType.addActionListener(new ActionListener() {
+		cboxName1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nonUser)return;
 				
 			}
 		});
-		cboxName.addActionListener(new ActionListener() {
+		cboxName2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (nonUser)
-					return;
-				VibrationList.save();
-
-				if (cboxName.getSelectedIndex() == 0) {
-
-				}
-
-				vs = VibrationList.getSet(cboxName.getSelectedIndex());
-				vg = vs.getGroup(0, 0);
-
-				updateTable();
+				if (nonUser)return;
+				
+				updateInputs();
 			}
 		});
-		cboxStage.addActionListener(new ActionListener() {
+		cboxName3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (nonUser)
-					return;
-				vg = vs.getGroup(cboxStage.getSelectedIndex(), 0);
-				updateTable();
+				if (nonUser)return;
+				
+				updateInputs();
 			}
 		});
-		cboxPos.addActionListener(new ActionListener() {
+		cboxName4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (nonUser)
-					return;
-				vg = vs.getGroup(cboxStage.getSelectedIndex(),
-						cboxPos.getSelectedIndex());
-				updateTable();
+				if (nonUser)return;
+				
+				updateInputs();
 			}
 		});
 		btnRemove.addActionListener(new ActionListener() {
@@ -228,21 +211,20 @@ public class GUISkyrimAnimator extends JFrame {
 				if (table.getSelectedRow() <= model.getRowCount()
 						&& table.getSelectedRow() != -1) {
 					vg.remove(table.getSelectedRow());
-					updateTable();
+					updateInputs();
 				}
 			}
 		});
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vg.add(new VibrationConstant(null, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0));
-				updateTable();
+				vg.add(new VibrationConstant(0, 0, 0, 0, 0, 0, 0, 0));
+				updateInputs();
 			}
 		});
 		btnCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				vg.add(vg.get(table.getSelectedRow()).clone(null, 0, 0));
-				updateTable();
+				vg.add(vg.get(table.getSelectedRow()).clone());
+				updateInputs();
 			}
 		});
 		btnUp.addActionListener(new ActionListener() {
@@ -250,7 +232,7 @@ public class GUISkyrimAnimator extends JFrame {
 				int from = table.getSelectedRow();
 				int to = from - 1;
 				vg.swap(from, to);
-				updateTable();
+				updateInputs();
 			}
 		});
 		btnDown.addActionListener(new ActionListener() {
@@ -258,14 +240,14 @@ public class GUISkyrimAnimator extends JFrame {
 				int from = table.getSelectedRow();
 				int to = from + 1;
 				vg.swap(from, to);
-				updateTable();
+				updateInputs();
 			}
 		});
 
 		// load selected vibration
 
 		nonUser = false;
-		updateTable();
+		updateInputs();
 	}
 
 	boolean nonUser = true;
@@ -320,7 +302,7 @@ public class GUISkyrimAnimator extends JFrame {
 
 			// set all user inputs
 			if (vg.get(row).getType() != type) {
-				vg.set(row, vg.get(row).clone(null, 0, 0, type));
+				vg.set(row, vg.get(row).clone(type));
 			}
 			// vg.get(row).setType(type);
 			vg.get(row).setVibType(vibType);
@@ -334,30 +316,30 @@ public class GUISkyrimAnimator extends JFrame {
 		}
 
 		// updated fields with updated vibration
-		updateTable();
+		updateInputs();
 	}
 
-	private void updateTable() {
+	private void updateInputs() {
 		if (nonUser)
 			return;
 		nonUser = true;
-		// set stages
-		cboxStage.removeAllItems();
-		cboxPos.removeAllItems();
-		for (int i = 0; i < vs.getStageSize(); i++) {
-			cboxStage.addItem(i);
-		}
-
-		// set positions
-		for (int i = 0; i < vs.getPosSize(); i++) {
-			cboxPos.addItem(i);
-		}
-		if (vg == null) {
-			vg = new VibrationGroup(cboxStage.getSelectedIndex(),
-					cboxPos.getSelectedIndex());
-		}
-		cboxStage.setSelectedIndex(vg.getStage());
-		cboxPos.setSelectedIndex(vg.getPos());
+		
+		cboxName1.removeAllItems();
+		cboxName2.removeAllItems();
+		cboxName3.removeAllItems();
+		cboxName4.removeAllItems();
+		
+		cboxName1.setModel(new DefaultComboBoxModel<String>(VibrationList.getName1List()));
+		cboxName2.setModel(new DefaultComboBoxModel<String>(VibrationList.getName2List(vg.getName1())));
+		cboxName3.setModel(new DefaultComboBoxModel<String>(VibrationList.getName3List(vg.getName1(),vg.getName2())));
+		cboxName4.setModel(new DefaultComboBoxModel<String>(VibrationList.getName4List(vg.getName1(),vg.getName2(),vg.getName3())));
+		
+		cboxName1.setSelectedItem(vg.getName1());
+		cboxName2.setSelectedItem(vg.getName2());
+		cboxName3.setSelectedItem(vg.getName3());
+		cboxName4.setSelectedItem(vg.getName4());
+		
+		
 
 		// remove old one
 		while (model.getRowCount() > 0) {
@@ -423,8 +405,8 @@ public class GUISkyrimAnimator extends JFrame {
 		}
 
 		// update tags
-		LBLTAGS.setText("Tags: " + Arrays.toString(vs.getTags()).substring(1,
-				Arrays.toString(vs.getTags()).length() - 1));
+		LBLTAGS.setText("Tags: " + Arrays.toString(vg.getTags()).substring(1,
+				Arrays.toString(vg.getTags()).length() - 1));
 
 		nonUser = false;
 	}
@@ -462,20 +444,10 @@ public class GUISkyrimAnimator extends JFrame {
 	}
 
 	public void updateVibration() {
-		// update name list
-		cboxName.setModel(new DefaultComboBoxModel<String>(
-				VibrationList.getNameList()));
 		// select new
-		VibrationSet ls = VibrationList.getLastSet();
-		VibrationGroup lg = ls.getLastGroup();
-		if (lg == null)
-			return;
-		System.out.println(
-				ls.getName() + " " + lg.getStage() + " " + lg.getPos());
-		cboxName.setSelectedItem(ls.getName());
-		cboxStage.setSelectedIndex(lg.getStage());
-		cboxPos.setSelectedIndex(lg.getPos());
-
+		vg = VibrationList.getLast();
+		
+		updateInputs();
 	}
 
 }

@@ -1,11 +1,13 @@
 package j.pivate.main.skyrim.vibnew.types;
 
+import j.pivate.main.skyrim.vibnew.Vibration;
+
 public class VibrationSine extends Vibration {
 
-	public VibrationSine(String name, int stage, int pos, int vibType,
+	public VibrationSine(int vibType,
 			float strength, float minStrength, float interval, float time,
 			float onTime, float startDelay, float amount) {
-		super(name, stage, pos, vibType, 2, strength, minStrength, interval,
+		super(vibType, 2, strength, minStrength, interval,
 				time, onTime, startDelay, amount);
 
 	}
