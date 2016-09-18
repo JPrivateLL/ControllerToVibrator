@@ -5,22 +5,22 @@ public abstract class Vibrator {
 	private boolean[] types;
 	private boolean muted = false;
 
-	public Vibrator(String name, boolean[] types) throws ArithmeticException{
+	public Vibrator(String name, boolean[] types) throws ArithmeticException {
 		this.name = name;
 		this.types = types;
 	}
-	
-	public Vibrator(String name) throws ArithmeticException{
+
+	public Vibrator(String name) throws ArithmeticException {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	public boolean[] getType() {
 		return types;
-		
+
 	}
 
 	public abstract boolean isConnected();

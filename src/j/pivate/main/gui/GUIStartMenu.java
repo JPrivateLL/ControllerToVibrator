@@ -94,9 +94,8 @@ public class GUIStartMenu extends JFrame {
 
 		if (myDocuments == null) {
 			try {
-				final Process p = Runtime
-						.getRuntime()
-						.exec("reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
+				final Process p = Runtime.getRuntime().exec(
+						"reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
 				p.waitFor();
 
 				final InputStream in = p.getInputStream();
@@ -127,8 +126,7 @@ public class GUIStartMenu extends JFrame {
 	private QuadCheckBox oral1, oral2, oral3, oral4;
 	private QuadCheckBox damage1, damage2, damage3, damage4;
 
-	private QuadCheckBox interaction1, interaction2, interaction3,
-			interaction4;
+	private QuadCheckBox interaction1, interaction2, interaction3, interaction4;
 	private JTabbedPane tabbedPane;
 
 	private JButton btnSelectPapyrusLog;
@@ -179,11 +177,9 @@ public class GUIStartMenu extends JFrame {
 
 		prefs = Preferences.userRoot().node(this.getClass().getName());
 
-		setIconImage(Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						GUIStartMenu.class
-								.getResource("/com/sun/javafx/webkit/prism/resources/mediaPlayDisabled.png")));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(GUIStartMenu.class.getResource(
+						"/com/sun/javafx/webkit/prism/resources/mediaPlayDisabled.png")));
 		setTitle("Controller as vibrator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
@@ -193,8 +189,8 @@ public class GUIStartMenu extends JFrame {
 		setBounds(100, 100, 500, 850);
 		setContentPane(contentPane);
 		try {
-			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel(
+					"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
@@ -203,8 +199,9 @@ public class GUIStartMenu extends JFrame {
 
 		final JPanel panel_main = new JPanel();
 		panel_main.setBackground(colorBackGround);
-		panel_main.setBorder(new CompoundBorder(new MatteBorder(0, 1, 0, 1,
-				colorBorderSide), new EmptyBorder(20, 20, 20, 20)));
+		panel_main.setBorder(
+				new CompoundBorder(new MatteBorder(0, 1, 0, 1, colorBorderSide),
+						new EmptyBorder(20, 20, 20, 20)));
 		contentPane.add(panel_main, BorderLayout.CENTER);
 		panel_main.setLayout(new BorderLayout(0, 0));
 
@@ -217,8 +214,8 @@ public class GUIStartMenu extends JFrame {
 		panel_north.add(panel_controllers);
 		panel_controllers.setBorder(null);
 		panel_controllers.setBackground(colorBackGround);
-		panel_controllers.setLayout(new BoxLayout(panel_controllers,
-				BoxLayout.Y_AXIS));
+		panel_controllers
+				.setLayout(new BoxLayout(panel_controllers, BoxLayout.Y_AXIS));
 
 		final JPanel panel_5 = new JPanel();
 		final FlowLayout flowLayout_1 = (FlowLayout) panel_5.getLayout();
@@ -248,8 +245,8 @@ public class GUIStartMenu extends JFrame {
 		panel_6.add(panel_controller1);
 		panel_controller1.setBorder(new EmptyBorder(5, 10, 5, 10));
 		panel_controller1.setBackground(colorBackGround);
-		panel_controller1.setLayout(new BoxLayout(panel_controller1,
-				BoxLayout.X_AXIS));
+		panel_controller1
+				.setLayout(new BoxLayout(panel_controller1, BoxLayout.X_AXIS));
 
 		final JLabel lblController1 = new JLabel("Controller 1:");
 		lblController1.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -264,8 +261,8 @@ public class GUIStartMenu extends JFrame {
 		controller1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				prefs.put("controller1", controller1.getSelectedItem()
-						.toString());
+				prefs.put("controller1",
+						controller1.getSelectedItem().toString());
 
 				if (controller1.getSelectedIndex() == 0) {
 					vaginal1.setEnabled(false);
@@ -293,8 +290,8 @@ public class GUIStartMenu extends JFrame {
 		panel_6.add(panel_controller2);
 		panel_controller2.setBorder(new EmptyBorder(5, 10, 5, 10));
 		panel_controller2.setBackground(colorBackGround);
-		panel_controller2.setLayout(new BoxLayout(panel_controller2,
-				BoxLayout.X_AXIS));
+		panel_controller2
+				.setLayout(new BoxLayout(panel_controller2, BoxLayout.X_AXIS));
 
 		final JLabel lblController2 = new JLabel("Controller 2:");
 		lblController2.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -308,8 +305,8 @@ public class GUIStartMenu extends JFrame {
 		controller2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				prefs.put("controller2", controller2.getSelectedItem()
-						.toString());
+				prefs.put("controller2",
+						controller2.getSelectedItem().toString());
 
 				if (controller2.getSelectedIndex() == 0) {
 					vaginal2.setEnabled(false);
@@ -337,8 +334,8 @@ public class GUIStartMenu extends JFrame {
 		panel_6.add(panel_controller3);
 		panel_controller3.setBorder(new EmptyBorder(5, 10, 5, 10));
 		panel_controller3.setBackground(colorBackGround);
-		panel_controller3.setLayout(new BoxLayout(panel_controller3,
-				BoxLayout.X_AXIS));
+		panel_controller3
+				.setLayout(new BoxLayout(panel_controller3, BoxLayout.X_AXIS));
 
 		final JLabel lblController3 = new JLabel("Controller 3:");
 		lblController3.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -352,8 +349,8 @@ public class GUIStartMenu extends JFrame {
 		controller3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				prefs.put("controller3", controller3.getSelectedItem()
-						.toString());
+				prefs.put("controller3",
+						controller3.getSelectedItem().toString());
 
 				if (controller3.getSelectedIndex() == 0) {
 					vaginal3.setEnabled(false);
@@ -381,8 +378,8 @@ public class GUIStartMenu extends JFrame {
 		panel_6.add(panel_controller4);
 		panel_controller4.setBorder(new EmptyBorder(5, 10, 5, 10));
 		panel_controller4.setBackground(colorBackGround);
-		panel_controller4.setLayout(new BoxLayout(panel_controller4,
-				BoxLayout.X_AXIS));
+		panel_controller4
+				.setLayout(new BoxLayout(panel_controller4, BoxLayout.X_AXIS));
 
 		final JLabel lblController4 = new JLabel("Controller 4:");
 		lblController4.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -396,8 +393,8 @@ public class GUIStartMenu extends JFrame {
 		controller4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				prefs.put("controller4", controller4.getSelectedItem()
-						.toString());
+				prefs.put("controller4",
+						controller4.getSelectedItem().toString());
 
 				if (controller4.getSelectedIndex() == 0) {
 					vaginal4.setEnabled(false);
@@ -530,8 +527,8 @@ public class GUIStartMenu extends JFrame {
 		txtpnToUseThis.setForeground(colorTextWhite);
 		txtpnToUseThis.setBackground(colorBackGround);
 		txtpnToUseThis.setEditable(false);
-		txtpnToUseThis
-				.setText("Make sure you have read the install/use instructions on the forum!\r\nStart by selecting the controllers you want to use above.");
+		txtpnToUseThis.setText(
+				"Make sure you have read the install/use instructions on the forum!\r\nStart by selecting the controllers you want to use above.");
 
 		final JPanel panel_8 = new JPanel();
 		panel_8.setBackground(colorBackGround);
@@ -1161,15 +1158,16 @@ public class GUIStartMenu extends JFrame {
 		panel_151.add(interaction4, gbc_checkBox_323);
 
 		final JTextPane txtpnAdadad = new JTextPane();
-		txtpnAdadad
-				.setText("Now select when the controller needs\nto vibrate. This can be done by select-\ning the checkboxes on the left.");
+		txtpnAdadad.setText(
+				"Now select when the controller needs\nto vibrate. This can be done by select-\ning the checkboxes on the left.");
 		txtpnAdadad.setForeground(Color.WHITE);
 		txtpnAdadad.setEditable(false);
 		txtpnAdadad.setBackground(new Color(25, 25, 25));
 		panel_19.add(txtpnAdadad);
 
 		final JTextPane textPane = new JTextPane();
-		textPane.setText("If the log location was not found\nyou can select it manualy. Make\nsure the log was created by the\ngame first, the log is created\nwhen a save is loaded and\nmy mod is used.");
+		textPane.setText(
+				"If the log location was not found\nyou can select it manualy. Make\nsure the log was created by the\ngame first, the log is created\nwhen a save is loaded and\nmy mod is used.");
 		textPane.setForeground(Color.WHITE);
 		textPane.setEditable(false);
 		textPane.setBackground(new Color(25, 25, 25));
@@ -1193,16 +1191,16 @@ public class GUIStartMenu extends JFrame {
 		chckbxDisableFocusCheck.setBackground(colorBackGround);
 
 		final JTextPane txtpnEnableThisOption = new JTextPane();
-		txtpnEnableThisOption
-				.setText("Enable this option if you have problems with\r\nfocusing, this can happen if you play\r\nborderless fullscreen. Better not to use!");
+		txtpnEnableThisOption.setText(
+				"Enable this option if you have problems with\r\nfocusing, this can happen if you play\r\nborderless fullscreen. Better not to use!");
 		txtpnEnableThisOption.setForeground(Color.WHITE);
 		txtpnEnableThisOption.setEditable(false);
 		txtpnEnableThisOption.setBackground(new Color(25, 25, 25));
 		panel_19.add(txtpnEnableThisOption);
 
 		final JTextPane txtpnTheSettingsAre = new JTextPane();
-		txtpnTheSettingsAre
-				.setText("The settings are saved next time you can just hit start.");
+		txtpnTheSettingsAre.setText(
+				"The settings are saved next time you can just hit start.");
 		txtpnTheSettingsAre.setForeground(Color.WHITE);
 		txtpnTheSettingsAre.setEditable(false);
 		txtpnTheSettingsAre.setBackground(new Color(25, 25, 25));
@@ -1211,11 +1209,9 @@ public class GUIStartMenu extends JFrame {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				while (true) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"Selected \"Controller Rumble.0\" inside:\"..\\Documents\\My Games\\Skyrim\\Logs\\Script\\User\"",
-									"Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Selected \"Controller Rumble.0\" inside:\"..\\Documents\\My Games\\Skyrim\\Logs\\Script\\User\"",
+							"Error", JOptionPane.INFORMATION_MESSAGE);
 					final JFileChooser chooser = new JFileChooser(
 							lastBrowseredLogLocation);
 					final int choice = chooser.showOpenDialog(null);
@@ -1248,7 +1244,7 @@ public class GUIStartMenu extends JFrame {
 		btnStartSkyrimProgram.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-			
+
 				if (btnSelectPapyrusLog.getText().contains("not")) {
 					JOptionPane.showMessageDialog(null,
 							"No log location selected", "error",
@@ -1258,7 +1254,8 @@ public class GUIStartMenu extends JFrame {
 
 				// start skyrim frame
 				try {
-					new SexlabMainThread(connectedVibratorsList(),lastBrowseredLogLocation);
+					new SexlabMainThread(connectedVibratorsList(),
+							lastBrowseredLogLocation);
 					frame.setVisible(false);
 				} catch (final Exception e) {
 					e.printStackTrace();
@@ -1279,11 +1276,9 @@ public class GUIStartMenu extends JFrame {
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				if (type1 == null) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"No input device found click the button Select first!",
-									"Error", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"No input device found click the button Select first!",
+							"Error", JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 
@@ -1309,8 +1304,7 @@ public class GUIStartMenu extends JFrame {
 									}
 
 								}
-								
-								
+
 								controllers[i].poll();
 								final net.java.games.input.EventQueue queue = controllers[i]
 										.getEventQueue();
@@ -1319,7 +1313,8 @@ public class GUIStartMenu extends JFrame {
 									final net.java.games.input.Component comp = event
 											.getComponent();
 
-									if (controllers[i].getName().equals(name1)) {
+									if (controllers[i].getName()
+											.equals(name1)) {
 										if (comp.getName().endsWith(type1)) {
 											if (comp.isAnalog()) {
 												strength = event.getValue();
@@ -1327,8 +1322,11 @@ public class GUIStartMenu extends JFrame {
 													strength = -strength;
 												if (strength < 0.01)
 													strength = 0;
-												for (int j = 0; j < connectedVibratorsList.size(); j++) {
-													connectedVibratorsList.get(j).rumble(strength);
+												for (int j = 0; j < connectedVibratorsList
+														.size(); j++) {
+													connectedVibratorsList
+															.get(j)
+															.rumble(strength);
 													System.out
 															.println(strength);
 												}
@@ -1339,22 +1337,25 @@ public class GUIStartMenu extends JFrame {
 														strength = 1;
 													for (int j = 0; j < connectedVibratorsList
 															.size(); j++) {
-														connectedVibratorsList.get(j).rumble(
-																strength);
+														connectedVibratorsList
+																.get(j)
+																.rumble(strength);
 													}
 												}
 											}
 										} else if (type2 != null) {
-											if (comp.getName().endsWith(type2)) {
-												if (!comp.isAnalog()
-														&& event.getValue() == 1) {
+											if (comp.getName()
+													.endsWith(type2)) {
+												if (!comp.isAnalog() && event
+														.getValue() == 1) {
 													strength -= 0.1;
 													if (strength < 0.01)
 														strength = 0;
 													for (int j = 0; j < connectedVibratorsList
 															.size(); j++) {
-														connectedVibratorsList.get(j).rumble(
-																strength);
+														connectedVibratorsList
+																.get(j)
+																.rumble(strength);
 													}
 												}
 
@@ -1456,8 +1457,8 @@ public class GUIStartMenu extends JFrame {
 											.append(", ");
 									final net.java.games.input.Component comp = event
 											.getComponent();
-									buffer.append(comp.getName()).append(
-											" changed to ");
+									buffer.append(comp.getName())
+											.append(" changed to ");
 									float value = event.getValue();
 									if (comp.isAnalog()) {
 										buffer.append(value);
@@ -1471,7 +1472,8 @@ public class GUIStartMenu extends JFrame {
 									if (skip < 0) {
 										if (comp.isAnalog()) {
 											if (runningCheckDigital) {
-												if (value < -0.5 && value > -1) {
+												if (value < -0.5
+														&& value > -1) {
 													value = -value;
 												}
 												if (value > 0.5 && value < 1) {
@@ -1489,8 +1491,8 @@ public class GUIStartMenu extends JFrame {
 														.getName();
 												type1 = comp.getName();
 											} else {
-												if (!comp.getName().equals(
-														type1)) {
+												if (!comp.getName()
+														.equals(type1)) {
 													System.out.println(buffer);
 													runningCheck = false;
 													type2 = comp.getName();
@@ -1524,11 +1526,9 @@ public class GUIStartMenu extends JFrame {
 					}
 				}).start();
 				contentPane.setVisible(false);
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"Click 2 bottons(first strength up, second strength down) or move 1 trigger/stick on your controller.\nA message will popup when you did this, you can close this window.",
-								"Select controller", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"Click 2 bottons(first strength up, second strength down) or move 1 trigger/stick on your controller.\nA message will popup when you did this, you can close this window.",
+						"Select controller", JOptionPane.PLAIN_MESSAGE);
 				contentPane.setVisible(true);
 				runningCheck = false;
 			}
@@ -1566,13 +1566,14 @@ public class GUIStartMenu extends JFrame {
 
 				if (choice != JFileChooser.APPROVE_OPTION)
 					return;
-				prefs.put("lastBrowseredVideoLocation", chooser
-						.getSelectedFile().getPath());
+				prefs.put("lastBrowseredVideoLocation",
+						chooser.getSelectedFile().getPath());
 
 				try {
 					System.out.println(chooser.getSelectedFile());
-					new VideoRumble(connectedVibratorsList(), chooser.getSelectedFile());
-					//frame.setVisible(false);
+					new VideoRumble(connectedVibratorsList(),
+							chooser.getSelectedFile());
+					// frame.setVisible(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -1585,18 +1586,18 @@ public class GUIStartMenu extends JFrame {
 		txtpnThisIsStill.setBackground(colorBackGround);
 		txtpnThisIsStill.setForeground(colorTextWhite);
 		txtpnThisIsStill.setEditable(false);
-		txtpnThisIsStill
-				.setText("With this you can play every video you like with vibrations. To add vibrations to a video you just play it, then while watching hold down A on the controller to start recording and use the right trigger to change strength, to remove a vibration you just hold A. Now when you rewind the video it will play the recorded vibration.\n\nYou do need to have VLC player installed and you need a xbox controller or emulator, the controller is used to record vibration you still can play videos without.\n\nthere is a demo video in the program folder");
+		txtpnThisIsStill.setText(
+				"With this you can play every video you like with vibrations. To add vibrations to a video you just play it, then while watching hold down A on the controller to start recording and use the right trigger to change strength, to remove a vibration you just hold A. Now when you rewind the video it will play the recorded vibration.\n\nYou do need to have VLC player installed and you need a xbox controller or emulator, the controller is used to record vibration you still can play videos without.\n\nthere is a demo video in the program folder");
 		Video.add(txtpnThisIsStill, BorderLayout.CENTER);
-		
+
 		JPanel Microfone = new JPanel();
 		tabbedPane.addTab("Microfone", null, Microfone, null);
-		
+
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
 				new GUIMicrofone(connectedVibratorsList());
-
 			}
 		});
 		Microfone.add(btnStart);
@@ -1610,31 +1611,33 @@ public class GUIStartMenu extends JFrame {
 		final JPanel panel_7 = new JPanel();
 		Settings.add(panel_7, BorderLayout.NORTH);
 		panel_7.setLayout(new BoxLayout(panel_7, BoxLayout.Y_AXIS));
-		
+
 		JPanel panel = new JPanel();
 		panel.setForeground(Color.WHITE);
 		panel.setBackground(new Color(25, 25, 25));
 		panel_7.add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		
-		JLabel lblForceResistentSensor = new JLabel("Force Resistent Sensor pin:");
+
+		JLabel lblForceResistentSensor = new JLabel(
+				"Force Resistent Sensor pin:");
 		lblForceResistentSensor.setForeground(Color.WHITE);
 		lblForceResistentSensor.setBackground(Color.WHITE);
 		panel.add(lblForceResistentSensor);
-		
+
 		frsPort = new JTextField();
 		frsPort.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				Integer number = null;
-				try {  
-					number = Integer.parseInt(frsPort.getText());  
-				}catch(NumberFormatException nfe){  
-					  frsPort.setText(Integer.toString(prefs.getInt("fsrAnalogPin", 0)));
-					  JOptionPane.showMessageDialog(frame,
-							    "invalid input(not a number)");
-					  return;
-				}  
+				try {
+					number = Integer.parseInt(frsPort.getText());
+				} catch (NumberFormatException nfe) {
+					frsPort.setText(
+							Integer.toString(prefs.getInt("fsrAnalogPin", 0)));
+					JOptionPane.showMessageDialog(frame,
+							"invalid input(not a number)");
+					return;
+				}
 				prefs.putInt("fsrAnalogPin", number);
 			}
 		});
@@ -1686,10 +1689,10 @@ public class GUIStartMenu extends JFrame {
 		panel_4.setBackground(colorBackGround);
 		panel_4.setBorder(new CompoundBorder(new EmptyBorder(14, 0, 0, 0),
 				new LineBorder(new Color(57, 57, 57))));
-		
+
 		final JLabel lblMadeByJprivate = new JLabel("Version:" + Start.version
-				+ " Made by Mr. Private (www.loverslab.com) 2015 " + (Start.isDebugging() ? "DEBUG MODE!":"")
-				);
+				+ " Made by Mr. Private (www.loverslab.com) 2015 "
+				+ (Start.isDebugging() ? "DEBUG MODE!" : ""));
 		lblMadeByJprivate.setForeground(colorHeader);
 		panel_4.add(lblMadeByJprivate);
 
@@ -1705,50 +1708,35 @@ public class GUIStartMenu extends JFrame {
 		}
 
 	}
-	private List<Vibrator> connectedVibratorsList(){
-		
-		//get selected controllers
+
+	private List<Vibrator> connectedVibratorsList() {
+
+		// get selected controllers
 		String[] selectedControllers = {
 				connectedVibrators[controller1.getSelectedIndex()],
 				connectedVibrators[controller2.getSelectedIndex()],
 				connectedVibrators[controller3.getSelectedIndex()],
-				connectedVibrators[controller4.getSelectedIndex()] 
-		};
-		
-		//get selected types
-		final int[][] selectedTypes = 
-			{{
-				vaginal1.getSelectionState(),
-				anal1.getSelectionState(),
-				breasts1.getSelectionState(),
-				oral1.getSelectionState(),
-				damage1.getSelectionState(),
-				interaction1.getSelectionState()
-			},{		
-				vaginal2.getSelectionState(),
-				anal2.getSelectionState(),
-				breasts2.getSelectionState(),
-				oral2.getSelectionState(),
-				damage2.getSelectionState(),
-				interaction2.getSelectionState()
-			},{	
-				vaginal3.getSelectionState(),
-				anal3.getSelectionState(),
-				breasts3.getSelectionState(),
-				oral3.getSelectionState(),
-				damage3.getSelectionState(),
-				interaction3.getSelectionState() 
-			},{						
-				vaginal4.getSelectionState(),
-				anal4.getSelectionState(),
-				breasts4.getSelectionState(),
-				oral4.getSelectionState(),
-				damage4.getSelectionState(),
-				interaction4.getSelectionState() 
-			}
-		};
-		
-		
+				connectedVibrators[controller4.getSelectedIndex()] };
+
+		// get selected types
+		final int[][] selectedTypes = {
+				{ vaginal1.getSelectionState(), anal1.getSelectionState(),
+						breasts1.getSelectionState(), oral1.getSelectionState(),
+						damage1.getSelectionState(),
+						interaction1.getSelectionState() },
+				{ vaginal2.getSelectionState(), anal2.getSelectionState(),
+						breasts2.getSelectionState(), oral2.getSelectionState(),
+						damage2.getSelectionState(),
+						interaction2.getSelectionState() },
+				{ vaginal3.getSelectionState(), anal3.getSelectionState(),
+						breasts3.getSelectionState(), oral3.getSelectionState(),
+						damage3.getSelectionState(),
+						interaction3.getSelectionState() },
+				{ vaginal4.getSelectionState(), anal4.getSelectionState(),
+						breasts4.getSelectionState(), oral4.getSelectionState(),
+						damage4.getSelectionState(),
+						interaction4.getSelectionState() } };
+
 		List<Vibrator> v = new ArrayList<Vibrator>();
 		boolean noneSelected = true;
 		for (int i = 0; i < selectedControllers.length; i++) {
@@ -1765,46 +1753,68 @@ public class GUIStartMenu extends JFrame {
 				if (sc == selectedControllers[j] && i != j
 						&& !sc.contains("None")) {
 					JOptionPane.showMessageDialog(null,
-							"2 the same controllers selected!",
-							"Error", JOptionPane.INFORMATION_MESSAGE);
+							"2 the same controllers selected!", "Error",
+							JOptionPane.INFORMATION_MESSAGE);
 					return null;
 				}
 			}
 
 			boolean[] typeList = new boolean[12];
-			
-			//getType for skyrim
-			if (selectedTypes[i][0] == 1 || selectedTypes[i][0] == 3) {typeList[0] = true;}
-			if (selectedTypes[i][0] == 2 || selectedTypes[i][0] == 3) {typeList[1] = true;}
-			if (selectedTypes[i][1] == 1 || selectedTypes[i][1] == 3) {typeList[2] = true;}
-			if (selectedTypes[i][1] == 2 || selectedTypes[i][1] == 3) {typeList[3] = true;}
-			if (selectedTypes[i][2] == 1 || selectedTypes[i][2] == 3) {typeList[4] = true;}
-			if (selectedTypes[i][2] == 2 || selectedTypes[i][2] == 3) {typeList[5] = true;}
-			if (selectedTypes[i][3] == 1 || selectedTypes[i][3] == 3) {typeList[6] = true;}
-			if (selectedTypes[i][3] == 2 || selectedTypes[i][3] == 3) {typeList[7] = true;}
-			if (selectedTypes[i][4] == 1 || selectedTypes[i][4] == 3) {typeList[8] = true;}
-			if (selectedTypes[i][4] == 2 || selectedTypes[i][4] == 3) {typeList[9] = true;}
-			if (selectedTypes[i][5] == 1 || selectedTypes[i][5] == 3) {typeList[10] = true;}
-			if (selectedTypes[i][5] == 2 || selectedTypes[i][5] == 3) {typeList[11] = true;}
 
-			
-			//create the vibrator and add it to the list
+			// getType for skyrim
+			if (selectedTypes[i][0] == 1 || selectedTypes[i][0] == 3) {
+				typeList[0] = true;
+			}
+			if (selectedTypes[i][0] == 2 || selectedTypes[i][0] == 3) {
+				typeList[1] = true;
+			}
+			if (selectedTypes[i][1] == 1 || selectedTypes[i][1] == 3) {
+				typeList[2] = true;
+			}
+			if (selectedTypes[i][1] == 2 || selectedTypes[i][1] == 3) {
+				typeList[3] = true;
+			}
+			if (selectedTypes[i][2] == 1 || selectedTypes[i][2] == 3) {
+				typeList[4] = true;
+			}
+			if (selectedTypes[i][2] == 2 || selectedTypes[i][2] == 3) {
+				typeList[5] = true;
+			}
+			if (selectedTypes[i][3] == 1 || selectedTypes[i][3] == 3) {
+				typeList[6] = true;
+			}
+			if (selectedTypes[i][3] == 2 || selectedTypes[i][3] == 3) {
+				typeList[7] = true;
+			}
+			if (selectedTypes[i][4] == 1 || selectedTypes[i][4] == 3) {
+				typeList[8] = true;
+			}
+			if (selectedTypes[i][4] == 2 || selectedTypes[i][4] == 3) {
+				typeList[9] = true;
+			}
+			if (selectedTypes[i][5] == 1 || selectedTypes[i][5] == 3) {
+				typeList[10] = true;
+			}
+			if (selectedTypes[i][5] == 2 || selectedTypes[i][5] == 3) {
+				typeList[11] = true;
+			}
+
+			// create the vibrator and add it to the list
 			if (sc.contains("Trance Vibrator")) {
 				v.add(new VibratorTrance(typeList));
 			} else if (sc.contains("Xbox")) {
-				v.add(new VibratorXbox(Integer.parseInt(sc.substring(sc
-						.length() - 1)), typeList));
+				v.add(new VibratorXbox(
+						Integer.parseInt(sc.substring(sc.length() - 1)),
+						typeList));
 			} else if (sc.contains("Arduino")) {
 				try {
-					int pin = Integer.parseInt(sc.substring(sc
-							.indexOf("pin ") + 4));
+					int pin = Integer
+							.parseInt(sc.substring(sc.indexOf("pin ") + 4));
 					v.add(new VibratorArduino(typeList, pin));
 				} catch (IllegalArgumentException | NoSuchPortException e) {
-					JOptionPane.showMessageDialog(
-							null,
-							"Can't connect to Arduino, "
-									+ e.getMessage(), "Error",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Can't connect to Arduino, " + e.getMessage(),
+							"Error", JOptionPane.INFORMATION_MESSAGE);
 					return null;
 				}
 			} else {
@@ -1814,15 +1824,14 @@ public class GUIStartMenu extends JFrame {
 		}
 
 		if (noneSelected) {
-			JOptionPane.showMessageDialog(null,
-					"No controller selected!", "error",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No controller selected!",
+					"error", JOptionPane.INFORMATION_MESSAGE);
 			return null;
 		}
-		
+
 		return v;
 	}
-	
+
 	private String[] connectedVibrators() {
 		return connectedVibrators(false);
 	}
@@ -1849,8 +1858,8 @@ public class GUIStartMenu extends JFrame {
 			final boolean[] b = VibratorXbox.ConnectedControllers();
 			for (int i = 0; i < b.length; i++) {
 				if (b[i]) {
-					controllerSupported.add("Xbox or Xbox emulator nr:"
-							+ (i + 1));
+					controllerSupported
+							.add("Xbox or Xbox emulator nr:" + (i + 1));
 				}
 			}
 
@@ -1877,7 +1886,7 @@ public class GUIStartMenu extends JFrame {
 	private void loadPrefs() {
 
 		prefs.getBoolean("ardiunoTest", false);
-		
+
 		final String i1 = prefs.get("controller1", "none");
 		final String i2 = prefs.get("controller2", "none");
 		final String i3 = prefs.get("controller3", "none");
@@ -1923,32 +1932,31 @@ public class GUIStartMenu extends JFrame {
 		interaction3.setSelectionState(prefs.getInt("interaction3", 0));
 		interaction4.setSelectionState(prefs.getInt("interaction4", 0));
 
-		chckbxDisableFocusCheck.setSelected(prefs.getBoolean(
-				"chckbxDisableFocusCheck", false));
+		chckbxDisableFocusCheck.setSelected(
+				prefs.getBoolean("chckbxDisableFocusCheck", false));
 
 		tabbedPane.setSelectedIndex(prefs.getInt("tabbedPane", 0));
 
 		lastBrowseredVideoLocation = (prefs.get("lastBrowseredVideoLocation",
 				"C:\\"));
-		lastBrowseredLogLocation = (prefs
-				.get("lastBrowseredLogLocation",
-						getMyDocumentsFolderLocation()
-								+ "\\My Games\\Skyrim\\Logs\\Script\\User\\Controller Rumble.0.log"));
+		lastBrowseredLogLocation = (prefs.get("lastBrowseredLogLocation",
+				getMyDocumentsFolderLocation()
+						+ "\\My Games\\Skyrim\\Logs\\Script\\User\\Controller Rumble.0.log"));
 		portNr.setText(prefs.get("portNr", "COM7"));
 		frsPort.setText(Integer.toString(prefs.getInt("fsrAnalogPin", 0)));
 	}
 
-	public static void staticSetVisible(boolean b){
+	public static void staticSetVisible(boolean b) {
 		frame.setVisible(b);
 	}
-	
-	public static int getFsrAnalogPin(){
+
+	public static int getFsrAnalogPin() {
 		return prefs.getInt("fsrAnalogPin", 0);
-		
+
 	}
-	
-	public static String getArduinoPort(){
+
+	public static String getArduinoPort() {
 		return prefs.get("portNr", "COM7");
 	}
-	
+
 }

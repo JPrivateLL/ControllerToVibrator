@@ -5,19 +5,19 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="JN01/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/JArduino/org.sintef.jarduino.core-0.1.4.jar"/>
-	<classpathentry kind="lib" path="lib/JNA/jinput.jar"/>
-	<classpathentry kind="lib" path="lib/xbox/jaw.jar"/>
-	<classpathentry kind="lib" path="lib/xbox/XboxController.jar"/>
-	<classpathentry kind="lib" path="lib/JNA/jna-3.5.2.jar"/>
-	<classpathentry kind="lib" path="lib/JNA/platform-3.5.2.jar"/>
-	<classpathentry kind="lib" path="lib/JArduino/org.kevoree.extra.osgi.rxtx-2.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/vlc/vlcj-3.8.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/vlc/vlcj-3.8.0.jar" sourcepath="lib/vlc/vlcj-3.8.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/vlc/slf4j-simple-1.7.13.jar"/>
-	<classpathentry kind="lib" path="lib/vlc/slf4j-api-1.7.13.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
-	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/JArduino/org.sintef.jarduino.core-0.1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/JNA/jinput.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xbox/jaw.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xbox/XboxController.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/JNA/jna-3.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/JNA/platform-3.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/JArduino/org.kevoree.extra.osgi.rxtx-2.2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/vlc/vlcj-3.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/vlc/vlcj-3.8.0.jar" sourcepath="lib/vlc/vlcj-3.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/vlc/slf4j-simple-1.7.13.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/vlc/slf4j-api-1.7.13.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry exported="true" kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

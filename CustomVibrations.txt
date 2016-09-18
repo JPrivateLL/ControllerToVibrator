@@ -3,6 +3,78 @@
 ; @ = stage, place
 ; # = vibration type, strength, minimum strength, interval, time, ON time(for interval), start delay, amount
 
+!$zap_armb_lesbian01, [arrok, oral, vaginal, lying, loving, armbinder, subsub, ff]
+@0, 0
+@0, 1
+
+!$zap_armb_lesbian01_ss, [arrok, oral, vaginal, lying, loving, armbinder, subsub, ff]
+@0, 0
+@0, 1
+
+!$zazap_sexlablesbian, [arrok, oral, vaginal, lying, loving, wrists, domsub, ff]
+@0, 0
+@0, 1
+
+!$zazap_sexlablesbianboth, [arrok, oral, vaginal, lying, loving, wrists, subsub, ff]
+@0, 0
+@0, 1
+
+!3jiou breastfeeding lesbian, [lesbian, kissing, leadin, foreplay, loving, boobjob, breastfeeding, mouth, pussy, hands, breast, boobs, 3jiou, ff]
+@0, 0
+@0, 1
+
+!arrok lesbian, [loving, lesbian, cunnilingus, oral, 69, standing, boobs, hands, pussy, sex, bbp, arrok, ff]
+@0, 0
+@0, 1
+@0, 2
+@0, 3
+@0, 4
+@1, 0
+@1, 1
+@1, 2
+@1, 3
+@1, 4
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+#0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+!leito lesbian 1, [ff, dirty, lesbian, sex, leito]
+@0, 0
+@0, 1
+
+!leito lesbian 2, [ff, cunnilingus, 69, dirty, lesbian, sex, leito]
+@0, 0
+@0, 1
+
+!leito lesbian double dildo 1, [ff, dirty, animobject, sextoy, vaginal, lesbian, sex, leito]
+@0, 0
+@0, 1
+@0, 2
+
+!leito lesbian double dildo 2, [ff, dirty, animobject, sextoy, vaginal, lesbian, sex, leito]
+@0, 0
+@0, 1
+@0, 2
+
+!rydin underarm spanking, [mf, dirty, spanking, standing, straight, sex, rydin, fm]
+@0, 0
+@0, 1
+@0, 2
+@0, 3
+@0, 4
+
+!tribadism, [dirty, loving, tribadism, lesbian, laying, pussy, sex, default, ff]
+@0, 0
+@0, 1
+
+!zyn lesbian, [lesbian, loving, kissing, standing, facing, pussy, mouth, sex, zyn, ff]
+@0, 0
+@0, 1
+@0, 2
+@1, 0
+@1, 1
+@1, 2
+
 !zyn licking, [loving, kneeling, laying, licking, cunnilingus, lesbian, oral, pussy, mouth, sex, zyn, ff]
 @0, 0
 @0, 1

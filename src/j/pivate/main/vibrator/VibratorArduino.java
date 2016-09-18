@@ -10,7 +10,8 @@ public class VibratorArduino extends Vibrator {
 
 	private final int minStrength = 57;
 
-	public VibratorArduino(final boolean[] types,final int pinNumber) throws IllegalArgumentException, NoSuchPortException {
+	public VibratorArduino(final boolean[] types, final int pinNumber)
+			throws IllegalArgumentException, NoSuchPortException {
 		super("Arduino pin " + pinNumber, types);
 		Arduino.init();
 		switch (pinNumber) {
@@ -35,8 +36,7 @@ public class VibratorArduino extends Vibrator {
 		default:
 			throw new IllegalArgumentException("pin invalide");
 		}
-	
-		
+
 	}
 
 	@Override
@@ -58,14 +58,14 @@ public class VibratorArduino extends Vibrator {
 			strength = 0;
 		else
 			strength = (strength * (255 - minStrength)) + minStrength;
-		
-		if(pin == PWMPin.PWM_PIN_5){
-			strength/=4;
+
+		if (pin == PWMPin.PWM_PIN_5) {
+			strength /= 4;
 		}
-		if(pin == PWMPin.PWM_PIN_3){
-			strength/=2;
+		if (pin == PWMPin.PWM_PIN_3) {
+			strength /= 2;
 		}
-		
+
 		Arduino.setPWM(pin, (int) strength);
 	}
 

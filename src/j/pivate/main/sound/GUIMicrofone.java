@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.swing.JFrame;
@@ -20,13 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import java.util.List;
 
-@SuppressWarnings("serial")
-public class GUIMicrofone extends JFrame{
+public class GUIMicrofone extends JFrame {
 	public static int calculateRMSLevel(final byte[] audioData) {
 		// audioData might be buffered data read from a data line
 		long lSum = 0;
@@ -48,27 +43,25 @@ public class GUIMicrofone extends JFrame{
 	public boolean running = true;
 
 	private JSlider s1, s2;
-	private Plotter plotter1,plotter2;
+	private Plotter plotter1, plotter2;
 	private final List<Vibrator> vibrators;
+
 	public GUIMicrofone(List<Vibrator> v) {
 		super("Sound To Rumble");
 		System.out.println(v.size());
 		this.vibrators = v;
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-
-				running = false;
-				
+				for (Vibrator vibrator : v) {
+					vibrator.rumble(0f);
+				}
+				System.exit(0);
 			}
 		});
 		setSize(300, 150);
 		setMaximumSize(new Dimension(200, 200));
 		setMinimumSize(new Dimension(200, 200));
-		
-
 
 		setVisible(true);
 
@@ -79,37 +72,29 @@ public class GUIMicrofone extends JFrame{
 		SidePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pane.add(SidePanel);
 
-		s1 = new JSlider(SwingConstants.VERTICAL, 0, 200, 100);
+		s1 = new JSlider(SwingConstants.VERTICAL, 0, 2000, 100);
 		s1.setToolTipText("Multiplier");
 		s1.setLocation(200, 0);
-		s1.setMajorTickSpacing(10);
-		s1.setPaintTicks(true);
-		s1.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(final ChangeEvent e) {
-				System.out.println("Slider1: " + s1.getValue());
-			}
-		});
+		s1.setMajorTickSpacing(20);
 		SidePanel.add(s1, BorderLayout.WEST);
 
-		s2 = new JSlider(SwingConstants.VERTICAL, 0, 10, 1);
+		s2 = new JSlider(SwingConstants.VERTICAL, 0, 100, 1);
 		s2.setToolTipText("Min sound to vibrate(remove static noise)");
 		s2.setLocation(200, 0);
 		s2.setMajorTickSpacing(1);
-		s2.setPaintTicks(true);
-		s2.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(final ChangeEvent e) {
-				System.out.println("Slider2: " + s2.getValue());
-			}
-		});
 
 		SidePanel.add(s2, BorderLayout.WEST);
 		
+		JSlider s3 = new JSlider();
+		s3.setMajorTickSpacing(1);
+		s3.setValue(0);
+		s3.setOrientation(SwingConstants.VERTICAL);
+		SidePanel.add(s3);
+
 		plotter1 = new Plotter(this);
 		getContentPane().add(plotter1);
 		plotter1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		plotter2 = new Plotter(this);
 		getContentPane().add(plotter2);
 		plotter2.setLayout(null);
@@ -117,101 +102,105 @@ public class GUIMicrofone extends JFrame{
 		plotter1.paint(getGraphics());
 
 		pack();
-		
-		
-		
-		JOptionPane
-		.showMessageDialog(
-				null,
+
+		JOptionPane.showMessageDialog(null,
 				"This is a demo and works only with microfone. Blow in the microfone and see what happens!\n\n"
 						+ "There is a way to use this with speakers so your controllers rumbles when sound is played(watching...).\n"
 						+ "Instal(inside rar) virtual audio cable, Then follow the instructions on the picture(almost to easy).\n"
 						+ "This is a workaround because Java can't record sound from playback devices only from record devices.",
 				"WIP", JOptionPane.INFORMATION_MESSAGE);
-		
-		
 
-				
-				
-				new Thread()
-				{
-				    public void run() {
-				        
-				    	
-						// Open a TargetDataLine for getting microphone input & sound level
-						TargetDataLine line = null;
-						final AudioFormat format = new AudioFormat(8000.0F, 8, 1, true, true);
-						final DataLine.Info info = new DataLine.Info(TargetDataLine.class,
-								format); // format is an AudioFormat object
-						if (!AudioSystem.isLineSupported(info)) {
-							JOptionPane.showMessageDialog(null,
-									"The audio line is not supported", "ERROR",
-									JOptionPane.ERROR_MESSAGE);
-							System.exit(1);
+		new Thread() {
+			public void run() {
+				AudioFormat fmt = new AudioFormat(44100f, 16, 1, true, false);
+	            final int bufferByteSize = 2048;
+
+	            TargetDataLine line;
+	            try {
+	                line = AudioSystem.getTargetDataLine(fmt);
+	                line.open(fmt, bufferByteSize);
+	            } catch(LineUnavailableException e) {
+	                System.err.println(e);
+	                return;
+	            }
+
+	            byte[] buf = new byte[bufferByteSize];
+	            float[] samples = new float[bufferByteSize / 2];
+
+	            float lastPeak = 0f;
+
+	            line.start();
+	            int skip = 0;
+	            float lastRMS = 0;
+	            int timer = 0;
+	            for(int b; (b = line.read(buf, 0, buf.length)) > -1;) {
+
+	                // convert bytes to samples here
+	                for(int i = 0, s = 0; i < b;) {
+	                    int sample = 0;
+
+	                    sample |= buf[i++] & 0xFF; // (reverse these two lines
+	                    sample |= buf[i++] << 8;   //  if the format is big endian)
+
+	                    // normalize to range of +/-1.0f
+	                    samples[s++] = sample / 32768f;
+	                }
+
+	                float rms = 0f;
+	                float peak = 0f;
+	                for(float sample : samples) {
+
+	                    float abs = Math.abs(sample);
+	                    if(abs > peak) {
+	                        peak = abs;
+	                    }
+
+	                    rms += sample * sample;
+	                }
+
+	                rms = (float)Math.sqrt(rms / samples.length);
+	                
+	                if(lastPeak > peak) {
+	                    peak = lastPeak * 0.875f;
+	                }
+
+	                lastPeak = peak;
+	                
+	                
+	                
+	                
+	                //my code
+	                if(lastRMS>peak){
+	                	if(timer>0){
+		                	timer-=1;
+		                	peak=lastRMS;
+	                	}else{
+	                		lastRMS=peak;
+	                	}
+	                }else{
+	                	timer = s2.getValue();
+	                	lastRMS = peak;
+	                }
+	                peak-=((float)s3.getValue())/1000f;
+	                rms-=((float)s3.getValue())/1000f;	
+	                peak*=((float)s1.getValue())/100f;
+	                rms*=((float)s1.getValue())/100f;
+	                plotter1.setNewAmp((int) (rms*100f));
+					plotter1.repaint();
+					plotter2.setNewAmp((int) (peak*100f));
+					plotter2.repaint();
+					
+	                if(skip==0){
+						skip=10;
+						
+						for (Vibrator v : vibrators) {
+							v.rumble(peak);
 						}
-						// Obtain and open the line.
-						try {
-							line = (TargetDataLine) AudioSystem.getLine(info);
-							line.open(format, 1000);
-							line.start();
-						} catch (final LineUnavailableException ex) {
-							JOptionPane.showMessageDialog(null,
-									"The TargetDataLine is Unavailable.", "ERROR",
-									JOptionPane.ERROR_MESSAGE);
-							System.exit(1);
-						}
-
-						float last=0;
-						while (running) {
-
-							final byte[] bytes = new byte[16];
-							line.read(bytes, 0, bytes.length);
-							
-							int loudest = 0;
-							for (int i = 0; i < bytes.length; i++) {
-								if(bytes[i]>loudest)loudest=bytes[i];
-							}
-							if(last>loudest){
-								last-=0.2f;
-								loudest=(int)last;
-							}else{
-								last=loudest;
-							}
-							//int i = calculateRMSLevel(bytes);// 0-100
-							
-							float i = loudest;
-							
-							i *= s1.getValue();
-							i /= 100;
-
-							
-
-							i -= s2.getValue();
-
-							if (i < 0) {
-								i = 0;
-							}
-							
-							
-							if (i > 100) {
-								i = 100;
-							}
-							
-							plotter1.setNewAmp((int)i);
-							plotter1.repaint();
-							
-							for (Vibrator v: vibrators) {
-								v.rumble(i/100f);
-							}
-							;
-						}
-						line.close();
-						System.exit(0);
-
-				    	
-				    	
-				    }
-				}.start();
+					}else{
+						skip--;
+					}
+				}
+			}
+		}.start();
 	}
-
 }

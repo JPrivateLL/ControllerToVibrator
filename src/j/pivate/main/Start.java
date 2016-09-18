@@ -16,12 +16,10 @@ class Handler implements Thread.UncaughtExceptionHandler {
 	public void uncaughtException(final Thread t, final Throwable e) {
 		System.out.println("GLOBAL ERROR CATCHER:" + e);
 		if (e.getMessage().contains("rxtxSerial")) {
-			JOptionPane
-					.showMessageDialog(
-							null,
-							"Something went wrong! dont panic this one can be fixed, best is to send me a private message on the forum\n"
-									+ "Error message: " + e.getMessage(),
-							"Fatal Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Something went wrong! dont panic this one can be fixed, best is to send me a private message on the forum\n"
+							+ "Error message: " + e.getMessage(),
+					"Fatal Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
@@ -29,11 +27,9 @@ class Handler implements Thread.UncaughtExceptionHandler {
 
 public class Start {
 
-	
 	public static final String version = "3.0";
 	private static boolean debug;
-	
-	
+
 	public static void addLibraryPath(final String pathToAdd) throws Exception {
 		final Field usrPathsField = ClassLoader.class
 				.getDeclaredField("usr_paths");
@@ -59,8 +55,8 @@ public class Start {
 		try {
 			final File file = new File("lock");
 
-			final RandomAccessFile randomAccessFile = new RandomAccessFile(
-					file, "rw");
+			final RandomAccessFile randomAccessFile = new RandomAccessFile(file,
+					"rw");
 			final FileLock fileLock = randomAccessFile.getChannel().tryLock();
 
 			if (fileLock != null) {
@@ -85,7 +81,7 @@ public class Start {
 		return false;
 	}
 
-	private Start(boolean debug){
+	private Start(boolean debug) {
 		Start.debug = debug;
 		if (!lockInstance()) {
 			JOptionPane.showMessageDialog(null, "Program already running");
@@ -107,10 +103,10 @@ public class Start {
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
-		if(!Start.debug){
-			
+		if (!Start.debug) {
+
 		}
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -122,21 +118,20 @@ public class Start {
 				}
 			}
 		});
-	
+
 	}
-	
+
 	public static void main(final String[] args) {
 		boolean debug = false;
 		for (int i = 0; i < args.length; i++) {
-			if(args[i].toLowerCase().equals("debug")){
+			if (args[i].toLowerCase().equals("debug")) {
 				debug = true;
 				System.out.println("debug");
 			}
 		}
 		new Start(debug);
-		
-	}
 
+	}
 
 	public static boolean isDebugging() {
 		return debug;

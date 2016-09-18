@@ -24,9 +24,8 @@ public class VibratorTrance extends Vibrator {
 			p = null;
 		}
 		if (p == null) {
-			JOptionPane
-					.showMessageDialog(null,
-							"Trance drivers not found, redownload or contact me on the forum.");
+			JOptionPane.showMessageDialog(null,
+					"Trance drivers not found, redownload or contact me on the forum.");
 			System.exit(0);
 		}
 	}

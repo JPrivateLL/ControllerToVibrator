@@ -14,7 +14,7 @@ public class Manual {
 	public Manual(final List<Vibrator> v, final Controller controller) {
 
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				while (true) {

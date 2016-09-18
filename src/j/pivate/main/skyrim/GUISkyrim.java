@@ -1,7 +1,7 @@
 package j.pivate.main.skyrim;
 
 import j.pivate.main.gui.GUIStartMenu;
-import j.pivate.main.skyrim.vibnew.CustomVibrations;
+import j.pivate.main.skyrim.vibnew.VibrationList;
 import j.pivate.main.skyrim.vibnew.GUISkyrimAnimator;
 import j.pivate.main.skyrim.vibnew.VibrationGroup;
 import j.pivate.main.skyrim.vibnew.VibrationSet;
@@ -52,7 +52,7 @@ public class GUISkyrim extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private boolean running = false;
-	
+
 	static Preferences prefs;
 	private final static String version = "Controller Rumble For Skyrim mods";
 	private JTextPane debugScreen;
@@ -69,12 +69,13 @@ public class GUISkyrim extends JFrame {
 			rbC3S125, rbC3S150, rbC3S175, rbC3S200;
 	private final JRadioButtonMenuItem rbC4S25, rbC4S50, rbC4S75, rbC4S100,
 			rbC4S125, rbC4S150, rbC4S175, rbC4S200;
-	
+
 	private SexlabMainThread mainThread;
-	
+
 	private String[] controllerName = { "none", "none", "none", "none" };
 
-	private float strengthController1, strengthController2,strengthController3, strengthController4;
+	private float strengthController1, strengthController2, strengthController3,
+			strengthController4;
 
 	private boolean testVibrateOn = false;
 
@@ -168,14 +169,19 @@ public class GUISkyrim extends JFrame {
 
 	}
 
-	public void setEquipedLabel(final String[]items){
-		lblEquiped.setText("Equiped: vaginal:"+items[0]+", piercing:"+items[1]+", anal:"+items[2]+", breasts:"+items[3]);
+	public void setStraponLabel(boolean b){
+		lblStrapon.setText("Strapon: "+b);
 	}
 	
-	public void setRunningVibrations(int amount){
-		RunningVibrationsLabel.setText("Running Vibrations:"+amount);
+	public void setEquipedLabel(String[] items) {
+		lblEquiped.setText("Equiped: vaginal:" + items[0] + ", piercing:"
+				+ items[1] + ", anal:" + items[2] + ", breasts:" + items[3]);
 	}
-	
+
+	public void setRunningVibrations(int amount) {
+		RunningVibrationsLabel.setText("Running Vibrations:" + amount);
+	}
+
 	public boolean testVibrate() {
 		return testVibrateOn;
 	}
@@ -188,6 +194,7 @@ public class GUISkyrim extends JFrame {
 
 	private final ButtonGroup buttonGroup_4 = new ButtonGroup();
 	private JPanel panel_1;
+	private JLabel lblStrapon;
 	private JLabel lblEquiped;
 	private JPanel panel_2;
 	private JLabel lblMadeByJprivate;
@@ -198,24 +205,20 @@ public class GUISkyrim extends JFrame {
 
 	public GUISkyrim(SexlabMainThread skyrimMainThread) {
 		super(version);
-		//everything done from now on is non user input
-		nonUser=false;
-		
-		
+		// everything done from now on is non user input
+		nonUser = false;
+
 		this.mainThread = skyrimMainThread;
 
 		prefs = GUIStartMenu.getPrefs();
-		if(running){
+		if (running) {
 			throw new RuntimeException("GUI already loaded, clicked to fast?");
 		}
 		running = true;
-		
-		
-		setIconImage(Toolkit
-				.getDefaultToolkit()
-				.getImage(
-						GUISkyrim.class
-								.getResource("/com/sun/javafx/webkit/prism/resources/mediaPlayDisabled.png")));
+
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(GUISkyrim.class.getResource(
+						"/com/sun/javafx/webkit/prism/resources/mediaPlayDisabled.png")));
 		final Container pane = getContentPane();
 
 		// custom close
@@ -242,53 +245,59 @@ public class GUISkyrim extends JFrame {
 		final DefaultCaret caret = (DefaultCaret) debugScreen.getCaret();
 
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		
+
 		panel_1 = new JPanel();
-		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_1.setBorder(
+				new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
 		getContentPane().add(panel_1, BorderLayout.WEST);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		panel_2 = new JPanel();
 		panel_1.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new BorderLayout(0, 0));
-				
+
 		panel_18 = new JPanel();
 		panel_2.add(panel_18, BorderLayout.SOUTH);
-		panel_18.setLayout(new MigLayout("", "[]", "[][][][]"));
-		
+		panel_18.setLayout(new MigLayout("", "[]", "[][][][][]"));
+
 		RunningVibrationsLabel = new JLabel("Running Vibrations:--");
 		panel_18.add(RunningVibrationsLabel, "cell 0 0");
 		
+		lblStrapon = new JLabel("Strapon: --");
+		panel_18.add(lblStrapon, "cell 0 1");
+
 		lblEquiped = new JLabel("Equiped:--");
-		panel_18.add(lblEquiped, "cell 0 1");
-				
+		panel_18.add(lblEquiped, "cell 0 2");
+
 		SLAIndicatorLabel = new JLabel("Arousel lvl:--");
-		panel_18.add(SLAIndicatorLabel, "cell 0 2");
-						
+		panel_18.add(SLAIndicatorLabel, "cell 0 3");
+
 		lblTimer = new JLabel("Timer:--");
-		panel_18.add(lblTimer, "cell 0 3");
-		
+		panel_18.add(lblTimer, "cell 0 4");
+
 		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VibrationSet ls = CustomVibrations.getLastSet();
-				if(ls==null)ls = CustomVibrations.getSet(0);
-				if(ls!=null){
+				VibrationSet ls = VibrationList.getLastSet();
+				if (ls == null)
+					ls = VibrationList.getSet(0);
+				if (ls != null) {
 					VibrationGroup lg = ls.getLastGroup();
-					if(lg==null)lg = ls.getGroup(0,0);
-					if(lg!=null){
+					if (lg == null)
+						lg = ls.getGroup(0, 0);
+					if (lg != null) {
 						passClass.guiSkyrim.setVisible(false);
-						JFrame csa = new GUISkyrimAnimator(ls,lg);
+						JFrame csa = new GUISkyrimAnimator(ls, lg);
 						csa.setVisible(true);
 						return;
 					}
 				}
-				JOptionPane.showMessageDialog(null, "No vibrations to edit, try running some animations first.");
+				JOptionPane.showMessageDialog(null,
+						"No vibrations to edit, try running some animations first.");
 			}
 		});
 		panel_2.add(btnEdit, BorderLayout.CENTER);
-
 
 		pane.add(new JScrollPane(debugScreen), BorderLayout.CENTER);
 
@@ -323,7 +332,7 @@ public class GUISkyrim extends JFrame {
 		menuBar.add(mnNewMenu);
 
 		controllerName = this.mainThread.getVibratorList().getName();
-		
+
 		final JMenu mnController1 = new JMenu(controllerName[0]);
 
 		if (controllerName[0].equals("none")) {
@@ -734,33 +743,29 @@ public class GUISkyrim extends JFrame {
 					}
 				}.start();
 			}
-			
-			
+
 		});
 
-		
-
-		
 		final JButton testVibrate = new JButton("MODDERS ONLY Test Vibrate");
 		topPanel.add(testVibrate);
 
 		final JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
-				panel.setLayout(new BorderLayout(0, 0));
-				
-				panel_16 = new JPanel();
-				panel.add(panel_16, BorderLayout.WEST);
-						panel_16.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-				
-						lineCounterLabel = new JLabel("Line Counter");
-						lineCounterLabel.setHorizontalAlignment(SwingConstants.LEFT);
-						panel_16.add(lineCounterLabel);
-		
+		panel.setLayout(new BorderLayout(0, 0));
+
+		panel_16 = new JPanel();
+		panel.add(panel_16, BorderLayout.WEST);
+		panel_16.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		lineCounterLabel = new JLabel("Line Counter");
+		lineCounterLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_16.add(lineCounterLabel);
+
 		panel_17 = new JPanel();
 		FlowLayout flowLayout_9 = (FlowLayout) panel_17.getLayout();
 		flowLayout_9.setAlignment(FlowLayout.RIGHT);
 		panel.add(panel_17, BorderLayout.EAST);
-		
+
 		lblMadeByJprivate = new JLabel("Made by J.Private (www.loverslab.com)");
 		panel_17.add(lblMadeByJprivate);
 		lblMadeByJprivate.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -772,32 +777,30 @@ public class GUISkyrim extends JFrame {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Reading Papyrus log, click Ok to stop. \nTo use it close the game write something in papyruslog, save it and click the button test vibrate again.",
-										"Vibrator Testing For Modders",
-										JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(null,
+								"Reading Papyrus log, click Ok to stop. \nTo use it close the game write something in papyruslog, save it and click the button test vibrate again.",
+								"Vibrator Testing For Modders",
+								JOptionPane.PLAIN_MESSAGE);
 
 						testVibrateOn = false;
 					}
 				}).start();
 			}
 		});
-		
-		
+
 		System.out.println("Skyrim Gui loaded");
 		setPreferredSize(new Dimension(620, 420));
 		pack();
-		
+
 		this.setVisible(true);
-		nonUser=false;
+		nonUser = false;
 	}
+
 	boolean nonUser = false;
 	private JButton btnEdit;
-		
+
 	public void setTimer(float time) {
-		lblTimer.setText("Timer:"+time);
+		lblTimer.setText("Timer:" + time);
 	}
-	
+
 }
