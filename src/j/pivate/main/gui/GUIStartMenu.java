@@ -1254,8 +1254,9 @@ public class GUIStartMenu extends JFrame {
 
 				// start skyrim frame
 				try {
-					new SexlabMainThread(connectedVibratorsList(),
-							lastBrowseredLogLocation);
+					List<Vibrator> cd = connectedVibratorsList();
+					if(cd==null)return;
+					new SexlabMainThread(cd,lastBrowseredLogLocation);
 					frame.setVisible(false);
 				} catch (final Exception e) {
 					e.printStackTrace();
