@@ -52,11 +52,7 @@ public class RunningVibrations {
 		// reverse loop, to make sure removed items don't crash the loop.
 		for (int i = list.size() - 1; i >= 0; i--) {
 			VibrationGroup vg = list.get(i);
-			if (vg.getName1().equals(name1)
-				&& (vg.getName2().equals(name2)||name2==null)
-				&& (vg.getName3().equals(name3)||name3==null)
-				&& (vg.getName4().equals(name4)||name4==null)
-				) {
+			if (vg.getName1().equals(name1) && vg.getName2().equals(name2) && vg.getName3().equals(name3) && vg.getName4().equals(name4)) {
 				list.remove(vg);
 			}
 		}

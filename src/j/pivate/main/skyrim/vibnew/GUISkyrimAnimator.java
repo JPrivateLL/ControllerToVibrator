@@ -1,44 +1,38 @@
-package j.pivate.main.skyrim.GUI;
+package j.pivate.main.skyrim.vibnew;
 
 import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import j.pivate.main.skyrim.passClass;
-import j.pivate.main.skyrim.vibnew.Vibration;
-import j.pivate.main.skyrim.vibnew.VibrationGroup;
-import j.pivate.main.skyrim.vibnew.VibrationList;
 import j.pivate.main.skyrim.vibnew.types.VibrationConstant;
+
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.beans.PropertyChangeEvent;
 
 public class GUISkyrimAnimator extends JFrame {
 
@@ -52,6 +46,7 @@ public class GUISkyrimAnimator extends JFrame {
 	private JComboBox<String> cboxVibTypes;
 	private JComboBox<String> cboxTypes;
 	private JLabel LBLTAGS;
+
 	private VibrationGroup vg;
 
 	public GUISkyrimAnimator(VibrationGroup vg1) {
@@ -73,6 +68,7 @@ public class GUISkyrimAnimator extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 5, 0, 0));
+		
 		cboxName1 = new JComboBox<String>();
 		panel.add(cboxName1);
 
@@ -186,39 +182,27 @@ public class GUISkyrimAnimator extends JFrame {
 		cboxName1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nonUser)return;
-				vg = VibrationList.get(
-						cboxName1.getItemAt(cboxName1.getSelectedIndex()));
-				updateInputs();
 				
 			}
 		});
 		cboxName2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nonUser)return;
-				vg = VibrationList.get(
-						cboxName1.getItemAt(cboxName1.getSelectedIndex()),
-						cboxName2.getItemAt(cboxName2.getSelectedIndex()));
+				
 				updateInputs();
 			}
 		});
 		cboxName3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nonUser)return;
-				vg = VibrationList.get(
-						cboxName1.getItemAt(cboxName1.getSelectedIndex()),
-						cboxName2.getItemAt(cboxName2.getSelectedIndex()),
-						cboxName3.getItemAt(cboxName3.getSelectedIndex()));
+				
 				updateInputs();
 			}
 		});
 		cboxName4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nonUser)return;
-				vg = VibrationList.get(
-						cboxName1.getItemAt(cboxName1.getSelectedIndex()),
-						cboxName2.getItemAt(cboxName2.getSelectedIndex()),
-						cboxName3.getItemAt(cboxName3.getSelectedIndex()),
-						cboxName4.getItemAt(cboxName4.getSelectedIndex()));
+				
 				updateInputs();
 			}
 		});
@@ -350,49 +334,12 @@ public class GUISkyrimAnimator extends JFrame {
 		cboxName3.setModel(new DefaultComboBoxModel<String>(VibrationList.getName3List(vg.getName1(),vg.getName2())));
 		cboxName4.setModel(new DefaultComboBoxModel<String>(VibrationList.getName4List(vg.getName1(),vg.getName2(),vg.getName3())));
 		
-		Component[] children = cboxName1.getComponents();
-		for (int i = 0; i < children.length; i++) {
-		  if (children[i] instanceof JButton)
-		    children[i].addMouseListener( new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					System.out.println("test");
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					System.out.println("test");
-					
-				}
-			} );
-		}
-		
 		cboxName1.setSelectedItem(vg.getName1());
 		cboxName2.setSelectedItem(vg.getName2());
 		cboxName3.setSelectedItem(vg.getName3());
 		cboxName4.setSelectedItem(vg.getName4());
 		
-
+		
 
 		// remove old one
 		while (model.getRowCount() > 0) {
@@ -458,13 +405,8 @@ public class GUISkyrimAnimator extends JFrame {
 		}
 
 		// update tags
-		if(vg.getTags()!=null){
-			LBLTAGS.setText("Tags: " + Arrays.toString(vg.getTags()).substring(1,
-					Arrays.toString(vg.getTags()).length() - 1));
-		}else{
-			LBLTAGS.setText("Tags: none");
-		}
-		
+		LBLTAGS.setText("Tags: " + Arrays.toString(vg.getTags()).substring(1,
+				Arrays.toString(vg.getTags()).length() - 1));
 
 		nonUser = false;
 	}
@@ -508,5 +450,4 @@ public class GUISkyrimAnimator extends JFrame {
 		updateInputs();
 	}
 
-	
 }

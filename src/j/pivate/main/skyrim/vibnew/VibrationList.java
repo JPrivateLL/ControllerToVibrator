@@ -15,11 +15,6 @@ import java.util.List;
 
 public class VibrationList {
 
-	public static void main(String[] arg){
-		load();
-		save();
-	}
-	
 	private static BufferedReader reader;
 	private static BufferedWriter writer;
 
@@ -33,41 +28,16 @@ public class VibrationList {
 		return list.get(nr);
 	}
 
-
-	public static VibrationGroup get(String name1){
-		for (VibrationGroup v : list) {
-			if(v.getName1().equals(name1)){
-				return v;
-			}
-		}
-		return null;
-	}
-	public static VibrationGroup get(String name1, String name2){
-		for (VibrationGroup v : list) {
-			if(v.getName1().equals(name1) && v.getName2().equals(name2)){
-				return v;
-			}
-		}
-		return null;
-	}
-	public static VibrationGroup get(String name1, String name2, String name3){
-		for (VibrationGroup v : list) {
-			if(v.getName1().equals(name1) && v.getName2().equals(name2) && v.getName3().equals(name3)){
-				return v;
-			}
-		}
-		return null;
-	}
-	
 	public static VibrationGroup get(String name1, String name2, String name3, String name4) {
 		for (VibrationGroup v : list) {
-			if (v.getName1().equals(name1) && v.getName2().equals(name2) && v.getName3().equals(name3) && v.getName4().equals(name4)) {
+			if (v.getName1().equals(name1) && v.getName2().equals(name2) && v.getName3().equals(name3)) {
 				lastGroup = v;
 				return v;
 			}
 		}
 		
 		// create if non existing
+		
 		VibrationGroup vg = new VibrationGroup(name1, name2, name3, name4);
 		lastGroup = vg;
 		list.add(vg);
@@ -84,55 +54,46 @@ public class VibrationList {
 	}
 
 	public static String[] getName1List() {
-		List<String> names = new ArrayList<String>();
-		for (VibrationGroup vg : list) {
-			if(!names.contains(vg.getName1())){
-				names.add(vg.getName1());
-			}
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			names[i] = list.get(i).getName1();
 		}
-		return names.toArray(new String[0]);
+		return names;
 	}
 	
 	public static String[] getName2List(String name1) {
-		List<String> names = new ArrayList<String>();
-		for (VibrationGroup vg : list) {
-			if(vg.getName1().equals(name1)){
-				if(!names.contains(vg.getName2())){
-					names.add(vg.getName2());
-				}
-			}
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1()))
+				names[i] = list.get(i).getName2();
 		}
-		return names.toArray(new String[0]);
+		return names;
 	}
 	
 	public static String[] getName3List(String name1,String name2) {
-		List<String> names = new ArrayList<String>();
-		for (VibrationGroup vg : list) {
-			if(vg.getName1().equals(name1)){
-				if(vg.getName2().equals(name2)){
-					if(!names.contains(vg.getName3())){
-						names.add(vg.getName3());
-					}
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1())){
+				if(name2.equals(list.get(i).getName2())){
+					names[i] = list.get(i).getName3();
 				}
 			}
 		}
-		return names.toArray(new String[0]);
+		return names;
 	}
 
 	public static String[] getName4List(String name1,String name2, String name3) {
-		List<String> names = new ArrayList<String>();
-		for (VibrationGroup vg : list) {
-			if(vg.getName1().equals(name1)){
-				if(vg.getName2().equals(name2)){
-					if(vg.getName3().equals(name3)){
-						if(!names.contains(vg.getName4())){
-							names.add(vg.getName4());
-						}
+		String[] names = new String[list.size()];
+		for (int i = 0; i < names.length; i++) {
+			if(name1.equals(list.get(i).getName1())){
+				if(name2.equals(list.get(i).getName2())){
+					if(name3.equals(list.get(i).getName3())){
+						names[i] = list.get(i).getName4();
 					}
 				}
 			}
 		}
-		return names.toArray(new String[0]);
+		return names;
 	}
 	
 	public static String getname1(int nr) {
@@ -183,6 +144,7 @@ public class VibrationList {
 					
 					//out
 					name1 = line;
+					
 				} else if (line.startsWith("@")) {
 					//name2 (doggy)
 					line = line.substring(1, line.length());
@@ -193,6 +155,7 @@ public class VibrationList {
 					//out
 					name2 = lines[0];
 					tags = Arrays.copyOfRange(lines, 1, lines.length);
+					
 				} else if (line.startsWith("#")) {
 					//name3 (stage)
 					line = line.substring(1, line.length());
@@ -208,7 +171,7 @@ public class VibrationList {
 					name4 = line;
 					vg = new VibrationGroup(name1, name2, name3, name4);
 					vg.setTags(tags);
-					list.add(vg);
+					
 				}else if(line.startsWith("%")){
 					//vibrations
 					line = line.substring(1, line.length());
@@ -276,10 +239,10 @@ public class VibrationList {
 			
 			// write all vibrations if needed
 			if(list.size()!=0){
-				String name1=null;
-				String name2=null;
-				String name3=null;
-				String name4=null;
+				String name1="";
+				String name2="";
+				String name3="";
+				String name4="";
 				for (VibrationGroup vg : list) {
 					if(!vg.getName1().equals(name1)){
 						name1 = vg.getName1();
@@ -288,7 +251,7 @@ public class VibrationList {
 					}
 					if(!vg.getName2().equals(name2)){
 						name2 = vg.getName2();
-						writer.write("@"+name2+(vg.getTags()==null?"":(", "+Arrays.toString(vg.getTags()))));
+						writer.write("@"+name2+(vg.getTags()==null?"":(", "+vg.getTags())));
 						writer.newLine();
 					}
 					if(!vg.getName3().equals(name3)){

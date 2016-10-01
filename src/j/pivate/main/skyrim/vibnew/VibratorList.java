@@ -12,7 +12,6 @@ public class VibratorList {
 	}
 
 	public void rumble(float[] strength) {
-		
 		for (Vibrator vibrator : vibrators) {
 			float maxStrength = 0;
 			for (int i = 0; i < strength.length; i++) {

@@ -1,10 +1,10 @@
-package j.pivate.main.skyrim.GUI;
+package j.pivate.main.skyrim;
 
 import j.pivate.main.gui.GUIStartMenu;
 import j.pivate.main.skyrim.vibnew.VibrationList;
-import j.pivate.main.skyrim.SexlabMainThread;
-import j.pivate.main.skyrim.passClass;
+import j.pivate.main.skyrim.vibnew.GUISkyrimAnimator;
 import j.pivate.main.skyrim.vibnew.VibrationGroup;
+import j.pivate.main.skyrim.vibnew.VibrationSet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -279,16 +279,22 @@ public class GUISkyrim extends JFrame {
 		btnEdit = new JButton("Edit");
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VibrationGroup lg = VibrationList.getLast();
-				if (lg == null)	lg = VibrationList.get(0);
-				if (lg != null){
-					passClass.guiSkyrim.setVisible(false);
-					JFrame csa = new GUISkyrimAnimator(lg);
-					csa.setVisible(true);
-				}else{
-					JOptionPane.showMessageDialog(null,
-						"No vibrations to edit, try running some animations first.");
+				VibrationSet ls = VibrationList.getLastSet();
+				if (ls == null)
+					ls = VibrationList.getSet(0);
+				if (ls != null) {
+					VibrationGroup lg = ls.getLastGroup();
+					if (lg == null)
+						lg = ls.getGroup(0, 0);
+					if (lg != null) {
+						passClass.guiSkyrim.setVisible(false);
+						JFrame csa = new GUISkyrimAnimator(ls, lg);
+						csa.setVisible(true);
+						return;
+					}
 				}
+				JOptionPane.showMessageDialog(null,
+						"No vibrations to edit, try running some animations first.");
 			}
 		});
 		panel_2.add(btnEdit, BorderLayout.CENTER);
