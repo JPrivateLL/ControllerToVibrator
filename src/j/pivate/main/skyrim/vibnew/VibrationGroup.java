@@ -24,6 +24,11 @@ public class VibrationGroup {
 		//clone 
 		VibrationGroup vg = new VibrationGroup(this.getName1(),this.getName2(),this.getName3(),this.getName4());
 		vg.setTags(this.tags);
+		
+		//clone list
+		for (Vibration v : list) {
+			vg.add(v.clone());
+		}
 		return vg;
 	}
 	

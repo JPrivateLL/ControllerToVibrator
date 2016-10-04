@@ -4,8 +4,8 @@ import j.pivate.main.gui.GUIStartMenu;
 import j.pivate.main.skyrim.vibnew.VibrationList;
 import j.pivate.main.skyrim.vibnew.VibratorList;
 import j.pivate.main.skyrim.vibnew.VibrationGroup;
+import j.pivate.main.skyrim.GUI.GUISkyrim;
 import j.pivate.main.skyrim.vibnew.RunningVibrations;
-import j.pivate.main.skyrim.vibnew.Vibration;
 import j.pivate.main.vibrator.Vibrator;
 
 import java.io.BufferedReader;
@@ -30,7 +30,7 @@ public class SexlabMainThread extends passClass {
 			final String logLocation) {
 		mainThread = this;
 		vibratorList = new VibratorList(vibators);
-		vibrationList = new RunningVibrations();
+		runningVibrations = new RunningVibrations();
 		this.papyrusLocation = logLocation;
 
 		new Thread() {
@@ -176,9 +176,9 @@ public class SexlabMainThread extends passClass {
 						delta = (updateTime - startTime) / 1000f;
 
 						if (delta >= 0.1) {
-							vibrationList.update(delta);
+							runningVibrations.update(delta);
 
-							float[] strength = vibrationList.getStrength();
+							float[] strength = runningVibrations.getStrength();
 
 							for (int i = 0; i < strength.length; i++) {
 								if (mute) {
@@ -199,16 +199,19 @@ public class SexlabMainThread extends passClass {
 							vibratorList.rumble(strength);
 
 							// check how many vibrations are running
-							int runnningVibrations = vibrationList.size();
+							int runnningVibrations = runningVibrations.size();
 							guiSkyrim.setRunningVibrations(runnningVibrations);
 
 							startTime = updateTime;
 						}
-
 						line = readNextLine();
 						if (line != null) {
+							
+
+							System.out.println(line);
 							line = line.toLowerCase();
 							lineCheck(line);
+							
 						} else {
 							try {
 								Thread.sleep(1);
@@ -266,7 +269,7 @@ public class SexlabMainThread extends passClass {
 	private int sla = -1;
 
 	public void removeAllVibrations() {
-		vibrationList.removeAll();
+		runningVibrations.removeAll();
 		vibratorList.stopAll();
 		guiSkyrim.addWaringToDebugScreen("Removed all running vibrations");
 	}
@@ -310,18 +313,31 @@ public class SexlabMainThread extends passClass {
 			guiSkyrim.setSLAIndicator(sla);
 			line = line.substring(0, (line.indexOf("jnsla=")));
 		}
-		if (line.contains("jnstart")) {
-			// get name
-			String name1 = findInLine("name1", line);
-			String name2 = findInLine("name2", line);
-			String name3 = findInLine("name3", line);
-			String name4 = findInLine("name4", line);
+		
+		String jnStart = "jnstart ";
+		if (line.contains(jnStart)) {
+			
+			// get names
+			String lineNames = line;
+			String name1 = null;
+			String name2 = null;
+			String name3 = null;
+			String name4 = null;
+			
+			lineNames = lineNames.substring(lineNames.indexOf(jnStart));
+			String names[] = lineNames.split(" ");
+			
+			if(names.length>1) name1=names[1];
+			if(names.length>2) name2=names[2];
+			if(names.length>3) name3=names[3];
+			if(names.length>4) name4=names[4];
+			
 			if (name1 == null)return;
 			if (name2 == null)return;
 			if (name3 == null)name3="";
 			if (name4 == null)name4="";
 			
-			
+			int strength
 			
 			// get tags
 			String tag = findInLine("tags", line.replace(" ", ""));
@@ -332,46 +348,31 @@ public class SexlabMainThread extends passClass {
 				tags = tag.split(",");
 			}
 			
-			boolean strapon = Boolean.getBoolean(findInLine("strapon", line));
 			
-			// get stage
-			Integer stage = null;
-			try {
-				stage = Integer.parseInt(findInLine("stage", line));
-			} catch (NumberFormatException e) {
-				stage = 0;
-			}
-
-			// get pos
-			Integer pos = null;
-			try {
-				pos = Integer.parseInt(findInLine("pos", line));
-			} catch (NumberFormatException e) {
-				pos = 0;
-			}
-
+			
 
 			// get group
 			VibrationGroup vg = VibrationList.get(name1, name2, name3, name4);
-
+			vg.setTags(tags);
+			
+			
 			if (passClass.guiAnimation != null) {
 				passClass.guiAnimation.updateVibration();
 			}
 			// add vibrations to running ones
 			for (int i = 0; i < vg.size(); i++) {
-				Vibration v = vg.get(i);
-				vibrationList.add(v.clone(vs.getName(), vg.getStage(), vg.getPos()));
+				runningVibrations.add(vg.clone());
 			}
+			
+			boolean strapon = Boolean.getBoolean(findInLine("strapon", line));
 			passClass.guiSkyrim.setStraponLabel(strapon);
 			
 		} else if (line.contains("jnstop")) {
-			String name = findInLine("name", line);
-			if (name != null)
-				vibrationList.remove(name);
-			return;
-		} else if (line.contains("jnsexlab endall")) {
-			vibrationList.removeAll();
-			return;
+			String name1 = findInLine("name1", line);
+			String name2 = findInLine("name2", line);
+			String name3 = findInLine("name3", line);
+			String name4 = findInLine("name4", line);
+			runningVibrations.remove(name1,name2,name3,name4);
 		} else if (line.contains("jnequip ")) {
 			equipedItemsName = findInLine("worn", line).split(",");
 			for (int i = 0; i < equipedItemsName.length; i++) {
@@ -391,7 +392,7 @@ public class SexlabMainThread extends passClass {
 			float delta = (t - timer) / 1000f;
 			guiSkyrim.setTimer(delta);
 			timer = t;
-		} else if (line.contains("jnCheckDebug ")) {
+		} else if (line.contains("jnDebug ")) {
 			line = line.substring(line.indexOf("debug:") + "debug:".length(),
 					line.length());
 			guiSkyrim.addWaringToDebugScreen(line);
@@ -405,7 +406,6 @@ public class SexlabMainThread extends passClass {
 		} else if (line.contains("log closed")) {
 			removeAllVibrations();
 		}
-
 	}
 
 	public static boolean[] getEquipedItems() {

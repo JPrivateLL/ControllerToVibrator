@@ -4,6 +4,8 @@ import gnu.io.NoSuchPortException;
 import j.pivate.main.Start;
 import j.pivate.main.skyrim.SexlabMainThread;
 import j.pivate.main.sound.GUIMicrofone;
+import j.pivate.main.theClub.GUITheClub;
+import j.pivate.main.theClub.theClub;
 import j.pivate.main.vibrator.Vibrator;
 import j.pivate.main.vibrator.VibratorArduino;
 import j.pivate.main.vibrator.VibratorJavaController;
@@ -14,6 +16,7 @@ import j.pivate.main.video.VideoRumble;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -1254,8 +1257,9 @@ public class GUIStartMenu extends JFrame {
 
 				// start skyrim frame
 				try {
-					new SexlabMainThread(connectedVibratorsList(),
-							lastBrowseredLogLocation);
+					List<Vibrator> cd = connectedVibratorsList();
+					if(cd==null)return;
+					new SexlabMainThread(cd,lastBrowseredLogLocation);
 					frame.setVisible(false);
 				} catch (final Exception e) {
 					e.printStackTrace();
@@ -1597,7 +1601,16 @@ public class GUIStartMenu extends JFrame {
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				new GUIMicrofone(connectedVibratorsList());
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							GUITheClub frame2 = new GUITheClub(connectedVibratorsList());
+							frame2.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		Microfone.add(btnStart);

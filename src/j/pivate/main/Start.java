@@ -8,6 +8,7 @@ import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.nio.channels.FileLock;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import javax.swing.JOptionPane;
 
@@ -122,6 +123,8 @@ public class Start {
 	}
 
 	public static void main(final String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		System.out.println("Seconds in current minute = " + calendar.getTime());
 		boolean debug = false;
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().equals("debug")) {
