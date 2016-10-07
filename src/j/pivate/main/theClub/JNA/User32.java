@@ -8,8 +8,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Structure;  
 import com.sun.jna.platform.win32.WinDef.RECT;  
 import com.sun.jna.ptr.ByteByReference;  
-import com.sun.jna.ptr.IntByReference;  
-import com.sun.jna.win32.StdCallLibrary.StdCallCallback;  
+import com.sun.jna.ptr.IntByReference;    
 import com.sun.jna.win32.W32APIOptions;  
   
   
