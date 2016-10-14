@@ -3,6 +3,7 @@ package j.pivate.main.theClub.JNA;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.platform.win32.WinDef.HMODULE;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 

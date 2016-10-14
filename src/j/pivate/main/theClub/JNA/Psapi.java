@@ -43,7 +43,7 @@ public interface Psapi extends StdCallLibrary{
             public int  SizeOfImage;
             public HANDLE EntryPoint;
 			@Override
-			protected List<String> getFieldOrder() {
+			protected List getFieldOrder() {
 				return Arrays.asList(new String[] { "lpBaseOfDll", "SizeOfImage", "EntryPoint"});
 			}
 }
